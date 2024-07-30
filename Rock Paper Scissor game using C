@@ -1,0 +1,79 @@
+// rock paper scissor
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+char computerChoice(){
+    int ran;
+    srand(time(0));
+    for (int i = 0; i < 1; i++){
+         ran = rand() % 100;
+         sleep(1);
+    }
+    char cinput;
+    if(ran>=0 && ran<=33){
+        cinput='R';
+    }
+    else if(ran>33 && ran<=66){
+        cinput='P';
+    }
+    else{
+        cinput='S';
+    }
+    return cinput;
+}
+void output(char cinput,char option, int* su, int*sc){
+     if(cinput=='R' && option=='P'){
+        *(su)++;
+    }
+    else if(cinput=='R' && option=='S'){
+        (*sc)++;
+    }
+    else if(cinput=='P' && option=='R'){
+        (*sc)++;
+    }
+    else if(cinput=='P' && option=='S'){
+        (*su)++;
+    }
+    else if(cinput=='S' && option=='P'){
+        (*sc)++;
+    }
+    else if(cinput=='S' && option=='R'){
+        (*su)++;
+    }
+}
+int main() {
+    while(1){
+        int choice;
+        printf("Press 1 to play a new game\n");
+        printf("Press 0 to exit the game\n");
+        scanf("%d",&choice);
+        if(choice==1){
+            int sc=0, su=0,counter=0;
+            while(counter<5){
+                char option;
+                printf("Enter your choice : \nR-rock\nP-paprer\nS-scissor\n");
+                scanf(" %c",&option);
+                //printf("%c\n",option);
+                char cinput=computerChoice();
+                output(cinput,option,&su,&sc);
+                counter++;
+            }
+        
+                if(su>sc){
+                    printf("CONGRATULATIONS you won the game\n");
+                }
+                else if(sc>su){
+                    printf("SORRY you lost to computer\n");
+                }
+                else{
+                    printf("it's a draw");
+                }
+        }
+        if(choice==0){
+            return 0;
+        }
+    }
+    return 0;
+}
