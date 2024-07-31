@@ -1,0 +1,151 @@
+// code to create a hangman word guessing game using C
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <ctype.h>
+//creating a struct to store the word and it's hint
+struct word{
+    char words[20];
+    char hint[100];
+};
+//function to generate a random number
+int randomNumberGenerator()
+{
+    srand(time(0));
+    int ran = rand()%23;
+    sleep(1);
+    return ran;
+}
+//function to display the hint
+void displayHint(int randomNum, struct word w[]){
+    printf("Hint is : \n%s",w[randomNum].hint);
+}
+int main() {
+    
+    //intializing struct variables
+    struct word w[]={
+        {"python","A popular programming language known for its readability.\n"},
+        {"volcano","A mountain that erupts with lava.\n"},
+        {"bicylce","A two-wheeled vehicle powered by pedaling.\n"},
+        {"asteroid","A small rocky body orbiting the sun.\n"},
+        {"violin","A string instrument played with a bow.\n"},
+        {"library","A place where books and other media are stored and available for borrowing.\n"},
+        {"rainbow","A multicolored arc formed by the refraction of sunlight.\n"},
+        {"chocolate","A sweet treat made from cocoa beans.\n"},
+        {"ocean","A large body of saltwater that covers most of the Earth's surface.\n"},
+        {"submarine","A watercraft capable of underwater operations.\n"},
+        {"elephant","The largest land animal with a trunk.\n"},
+        {"telescope","An instrument used to observe distant objects in space.\n"},
+        {"basketball","A sport played with a ball and a hoop.\n"},
+        {"algorithm","A set of rules or steps to solve a problem.\n"},
+        {"butterfly","An insect with colorful wings.\n"},
+        {"sculpture","A three-dimensional artwork created by shaping materials.\n"},
+        {"festival","A celebration or event with music, food, and activities.\n"},
+        {"jungle","A dense, tropical forest.\n"}, 
+        {"chemistry","The science of matter and its interactions.\n"},
+        {"desert","A dry, barren area of land with little rainfall.\n"},
+        {"astronaut","A person trained to travel in space.\n"},
+        {"restaurant" ,"A place where meals are prepared and served to customers.\n"},
+        {"meteorology","The study of weather and atmospheric conditions.\n"}
+
+    };
+    //declaring an integer to store the random number
+    int randomNum=randomNumberGenerator();
+    
+
+    
+    
+    //creating another char array to store the word and copying it
+    char answer[20];
+    strcpy(answer,w[randomNum].words);
+    //char answer[20]=w[randomNum].words;
+    
+    
+    //intializing int to store the life and 
+    int life=3;
+    char input;
+    while(1){
+        int option;
+        printf("Choose an option : \n1)Play\n2)Exit Game\n");
+        scanf("%d",&option);
+        if(option==2){
+            return 0;
+        }else{
+                //choosing the word to be taken using random number
+    displayHint(randomNum, w);
+            while(life>0){
+        int flag=0;
+        printf("\nEnter the character : ");
+        scanf(" %c",&input);
+        tolower(input);
+        //create a char array to store the guessess of the user
+         char guess[20];
+        //clear the char array so that the previous answer is not stored
+         guess[0]='\0';
+        for(int i=0;i<strlen(answer);i++){
+            
+            //checking if input character is already been guessed
+            if(input==guess[i]){
+                printf("\nYou have already guessed the letter\n");
+                flag=-1;
+                break;
+            }
+            
+            //checking if a new character is present inside the word
+            else if (answer[i]==input){
+                flag=1;
+                guess[i]=answer[i];
+            }
+        }
+        
+        //content to print if player made a wrong guess
+        if(flag==0){
+            printf("\nYou made a wrong guess\n");
+            life--;
+        }
+        
+        //content to print if player made a right guess
+        else if(flag==1){
+             printf("\nYou have made a correct guess\n");
+             for(int j=0;j<strlen(answer);j++){
+                    if(guess[j]=='\0'){
+                        printf(" _ ");
+                    }
+                    else{
+                        printf("%c ",guess[j]);
+                    }
+                }
+        }
+        
+        //checking if the guessed word and actual word are same
+        if(strcmp(answer,guess)==0){
+            printf("\nCONGRATULATIONS you found the word\n");
+            break;
+        }
+        
+        //printing hangman
+        if(life==2&& flag==0){
+            printf("\n|-----\n|\n|\n|");
+        }
+        if(life==1 && flag==0){
+            printf("\n|-----\n|  |\n|  0\n| /|\\ \n|\n|");
+        }
+        if(life==0 && flag==0){
+            printf("\n|-----\n|  |\n|  0\n| /|\\ \n|  |\n| /|\\");
+        }
+        
+        //content to print if the player lose the game
+        if(life==0){
+            printf("\nSORRY you lost the game\n\n");
+            break;
+        }
+        
+    }
+    }
+        }
+        
+    
+    return 0;
+}
