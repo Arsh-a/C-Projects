@@ -1,0 +1,112 @@
+//Calculator using if else if ladder
+#include <stdio.h>
+#include <math.h>
+void add(){
+    int num1,num2;
+    printf("Enter the first number : ");
+    scanf("%d",&num1);
+    
+    printf("Enter the second number : ");
+    scanf("%d",&num2);
+    
+    printf("The sum is %d\n",num1+num2);
+}
+void sub(){
+    int num1,num2;
+    printf("Enter the first number : ");
+    scanf("%d",&num1);
+    
+    printf("Enter the second number : ");
+    scanf("%d",&num2);
+    
+    printf("The difference is %d\n",num1-num2);
+}
+void prdt(){
+    int num1,num2;
+    printf("Enter the first number : ");
+    scanf("%d",&num1);
+    
+    printf("Enter the second number : ");
+    scanf("%d",&num2);
+    
+    printf("The product is %d\n",num1*num2);
+}
+void div(){
+    int num1,num2;
+    printf("Enter the first number : ");
+    scanf("%d",&num1);
+    
+    printf("Enter the second number : ");
+    scanf("%d",&num2);
+    
+    printf("The quotient is %0.2f\n",(float)num1/num2);
+}
+void power(){
+    int base,exponent;
+    printf("Enter the base : ");
+    scanf("%d",&base);
+    
+    printf("Enter the exponent : ");
+    scanf("%d",&exponent);
+    
+    printf("The answer is %d\n",pow(base,exponent));
+}
+void sqroot(){
+    int num;
+    printf("Enter the number : ");
+    scanf("%d",&num);
+    
+    printf("The square root is %0.2f\n",sqrt(num));
+}
+void cuberoot(){
+    int num;
+    printf("Enter the number : ");
+    scanf("%d",&num);
+    
+    printf("The cube root is %0.2f\n",cbrt(num));
+}
+void rem(){
+    int num1,num2;
+    printf("Enter the first number : ");
+    scanf("%d",&num1);
+    
+    printf("Enter the second number : ");
+    scanf("%d",&num2);
+    
+    printf("The remainder is %d\n",num1%num2);
+}
+int main() {
+    while(1){
+        int option;
+        printf("Press\n1.Addition\n2.Subtraction\n3.Multiplicatiion\n4.Division\n5.Power\n6.Square root\n7.Cube root\n8.Modulo\n9.Exit\n");
+        scanf("%d",&option);
+        if(option==9){
+            return 0;
+        }
+        else if(option==1){
+            add();
+        }
+        else if(option==2){
+            sub();
+        }
+        else if(option==3){
+            prdt();
+        }
+        else if(option==4){
+            div();
+        }
+        else if(option==5){
+            power();
+        }
+        else if(option==6){
+            sqroot();
+        }
+        else if(option==7){
+            cuberoot();
+        }
+        else if(option==8){
+            rem();
+        }
+    }
+    return 0;
+}
