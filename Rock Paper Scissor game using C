@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
+#include <ctype.h>
 char computerChoice(){
     int ran;
     srand(time(0));
@@ -25,22 +25,34 @@ char computerChoice(){
 }
 void output(char cinput,char option, int* su, int*sc){
      if(cinput=='R' && option=='P'){
+         printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         *(su)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
     else if(cinput=='R' && option=='S'){
+        printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         (*sc)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
     else if(cinput=='P' && option=='R'){
+         printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         (*sc)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
     else if(cinput=='P' && option=='S'){
+         printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         (*su)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
     else if(cinput=='S' && option=='P'){
+         printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         (*sc)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
     else if(cinput=='S' && option=='R'){
+         printf("Computer's choice : %c\tYour choice : %c",cinput,option);
         (*su)++;
+        printf("\tYour score : %d Computer's score : %d\n",*su,*sc);
     }
 }
 int main() {
@@ -51,10 +63,12 @@ int main() {
         scanf("%d",&choice);
         if(choice==1){
             int sc=0, su=0,counter=0;
+            printf("R-rock\nP-paprer\nS-scissor\n");
             while(counter<5){
                 char option;
-                printf("Enter your choice : \nR-rock\nP-paprer\nS-scissor\n");
+                printf("\nEnter your choice : ");
                 scanf(" %c",&option);
+                option=toupper(option);
                 //printf("%c\n",option);
                 char cinput=computerChoice();
                 output(cinput,option,&su,&sc);
@@ -62,13 +76,13 @@ int main() {
             }
         
                 if(su>sc){
-                    printf("CONGRATULATIONS you won the game\n");
+                    printf("\nCONGRATULATIONS you won the game\n\n\n");
                 }
                 else if(sc>su){
-                    printf("SORRY you lost to computer\n");
+                    printf("\nSORRY you lost to computer\n\n\n");
                 }
                 else{
-                    printf("it's a draw");
+                    printf("\nit's a draw\n\n");
                 }
         }
         if(choice==0){
