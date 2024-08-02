@@ -1,0 +1,199 @@
+ // Online C compiler to run C program online
+#include <stdio.h>
+#include <time.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <unistd.h>
+//we have to create a structure which specifies if snake or ladder is present inside the cell and it's corresponding length
+struct board{
+    //feature takes value s if snake is present in the cell otherwise it is l
+    char feature;
+    
+    //length tells the length of snake or ladder
+    int length;
+    
+    //assigns the value written on the board
+    int value;
+};
+//fuction to roll the die and create a random value between 0 and 6
+int rollDice()
+{
+    srand(time(0));
+    int diceValue=(int)(rand()%6)+1;
+    sleep(1);
+    printf("\nValue on the die is %d\n",diceValue);
+    return diceValue;
+}
+//fuction to display the board
+void displayBoard(int* playerPosition, int* computerPosition, struct board b[10][10])
+{
+    int cp=*computerPosition;
+    printf("\n\n");
+    int count=100,m=0,n=0;
+    for(int i=4;i>=0;i--){
+        for(int j=0;j<10;j++){
+           *computerPosition=cp;
+            if(b[m][n].value==(*playerPosition)){
+                if(b[m][n].feature=='l')
+                {
+                    (*playerPosition)+=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*computerPosition)){
+                if(b[m][n].feature=='l')
+                {
+                    (*computerPosition)+=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*playerPosition)){
+                if(b[m][n].feature=='s')
+                {
+                    (*playerPosition)-=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*computerPosition)){
+                if(b[m][n].feature=='s')
+                {
+                    (*computerPosition)-=b[m][n].length;
+                }
+            }
+            if(*playerPosition==count){
+                printf("\t\tP");
+            }
+            else if(*computerPosition==count){
+                printf("\t\tC");
+            }
+            else{
+                printf("\t\t%d",count);
+            } n++;
+            b[m][n].value=count;
+            count--;
+        }
+       // printf("\ncomputer position in between display is %d\n",*computerPosition);
+        m+=1;
+        printf("\n\n");
+        count-=9;
+        for(int j=0;j<10;j++){
+            if(b[m][n].value==(*playerPosition)){
+                if(b[m][n].feature=='l')
+                {
+                    (*playerPosition)+=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*computerPosition)){
+                if(b[m][n].feature=='l')
+                {
+                    (*computerPosition)+=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*playerPosition)){
+                if(b[m][n].feature=='s')
+                {
+                    (*playerPosition)-=b[m][n].length;
+                }
+            }
+            else if(b[m][n].value==(*computerPosition)){
+                if(b[m][n].feature=='s')
+                {
+                    (*computerPosition)-=b[m][n].length;
+                }
+            }
+            if(*playerPosition==count){
+                printf("\t\tP");
+            }
+            else if(*computerPosition==count){
+                printf("\t\tC");
+            }
+            else{
+                printf("\t\t%d",count);
+            }
+            n++;
+            b[m][n].value=count;
+            count++;
+        }
+        count-=11;
+        printf("\n\n");
+        if(count==1){
+            break;
+        }
+    }
+}
+    //printf("\ncomputer position after display is %d\n",*computerPosition);}
+//function to move the player into the board
+void playerMove(int* playerPosition, int* computerPosition, struct board b[10][10])
+{
+    int option;
+    printf("Press 1 to roll the die : ");
+    scanf("%d",&option);
+    if(option==1){
+        int newValue = rollDice();
+        *playerPosition=*playerPosition+newValue;
+        //printf("\n player position is %d\n",*playerPosition);
+    }
+    displayBoard(playerPosition, computerPosition,b);
+    
+}
+void computerMove(int* computerPosition,int*playerPosition, struct board b[10][10])
+{
+        printf("\n%d\n",*computerPosition);
+        int newValue = rollDice();
+        *computerPosition=*computerPosition+newValue;
+       // printf("\ncomputer position is %d\n",*computerPosition);
+        displayBoard(playerPosition, computerPosition, b);
+        //printf("\ncomputer position is %d\n",*computerPosition);
+}
+
+//function to position the ladder
+void positionLadder(struct board b[10][10]){
+    b[9][4].feature='l';
+    b[8][2].feature='l';
+    b[7][9].feature='l';
+    b[4][1].feature='l';
+    b[3][6].feature='l';
+    b[3][9].feature='l';
+    
+    b[9][4].length=30;
+    b[8][2].length=21;
+    b[7][9].length=23;
+    b[4][1].length=24;
+    b[3][6].length=6;
+    b[3][9].length=19;
+}
+
+//fuction to position the snakes
+void positionSnake(struct board b[10][10]){
+    b[7][3].feature='s';
+    b[4][3].feature='s';
+    b[1][5].feature='s';
+    b[1][7].feature='s';
+    b[0][3].feature='s';
+    
+    b[7][3].length=15;
+    b[4][3].length=24;
+    b[1][5].length=48;
+    b[1][7].length=37;
+    b[0][3].length=36;
+}
+
+
+int main() {
+    int playerPosition=0;
+    int computerPosition=0;
+    struct board b[10][10];
+    positionSnake(b);
+    positionLadder(b);
+    //printf("\n%d\n",computerPosition);
+    while(computerPosition|| playerPosition!=100){
+        playerMove(&playerPosition,&computerPosition, b);
+        computerMove(&computerPosition,&playerPosition, b);
+    }
+    
+    if(playerPosition==100){
+        printf("\n\n\nCONGRATULATIONS you WON against computer");
+    }
+    else{
+        printf("\n\n\nSORRY you LOST");
+    }
+    
+    return 0;
+}
