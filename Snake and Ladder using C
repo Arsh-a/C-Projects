@@ -135,7 +135,7 @@ void playerMove(int* playerPosition, int* computerPosition, struct board b[10][1
 }
 void computerMove(int* computerPosition,int*playerPosition, struct board b[10][10])
 {
-        printf("\n%d\n",*computerPosition);
+        //printf("\n%d\n",*computerPosition);
         int newValue = rollDice();
         *computerPosition=*computerPosition+newValue;
        // printf("\ncomputer position is %d\n",*computerPosition);
