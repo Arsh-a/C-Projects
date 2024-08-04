@@ -58,13 +58,13 @@ void displayBoard(int* playerPosition, int* computerPosition, struct board b[10]
                 }
             }
             if(*playerPosition==count){
-                printf("\t\tP");
+                printf("\tP");
             }
             else if(*computerPosition==count){
-                printf("\t\tC");
+                printf("\tC");
             }
             else{
-                printf("\t\t%d",count);
+                printf("\t%d",count);
             } n++;
             b[m][n].value=count;
             count--;
@@ -99,13 +99,13 @@ void displayBoard(int* playerPosition, int* computerPosition, struct board b[10]
                 }
             }
             if(*playerPosition==count){
-                printf("\t\tP");
+                printf("\tP");
             }
             else if(*computerPosition==count){
-                printf("\t\tC");
+                printf("\tC");
             }
             else{
-                printf("\t\t%d",count);
+                printf("\t%d",count);
             }
             n++;
             b[m][n].value=count;
