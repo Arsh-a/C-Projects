@@ -67,6 +67,11 @@ int main() {
     int life=3;
     char input;
     while(1){
+        //create a char array to store the guessess of the user
+         char guess[20];
+        //clear the char array so that the previous answer is not stored
+         guess[0]='\0';
+
         int option;
         printf("Choose an option : \n1)Play\n2)Exit Game\n");
         scanf("%d",&option);
@@ -80,10 +85,7 @@ int main() {
         printf("\nEnter the character : ");
         scanf(" %c",&input);
         tolower(input);
-        //create a char array to store the guessess of the user
-         char guess[20];
-        //clear the char array so that the previous answer is not stored
-         guess[0]='\0';
+        
         for(int i=0;i<strlen(answer);i++){
             
             //checking if input character is already been guessed
