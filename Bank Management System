@@ -1,0 +1,155 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <time.h>
+
+struct account{
+    int acNum;
+    char name[50];
+    int password;
+    int Balance;
+};
+
+void TransferMoney(struct account a[], int acNum){
+    
+    int recipientNum;
+    printf("\nEnter the account number of the recipient : ");
+    scanf("%d",&recipientNum);
+    
+    int amount;
+    printf("\nEnter the amount to be transfered : ");
+    scanf("%d",&amount);
+    
+    if((a[acNum].Balance)<amount){
+        printf("\nInsufficient balance, transaction could not be done");
+    }
+    else{
+    a[recipientNum].Balance+=amount;
+    a[acNum].Balance-=amount;
+    
+    printf("\nTransaction Successfull\nYour current balance is : %d",a[acNum].Balance);}
+    
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    
+    FILE *ptr;
+    char filename[200];
+    sprintf(filename,"%s.txt",a[acNum].name);
+    ptr=fopen(filename,"a");
+    fprintf(ptr,"Transaction of %d made to account number %d at %02d:%02d:%02d\nAccount balance : %d",amount,acNum,tm.tm_hour, tm.tm_min, tm.tm_sec,a[acNum].Balance);
+    fclose(ptr);
+    
+}
+
+void CheckBalance(struct account a[], int acNum){
+    printf("\nYour account balance is  : %d",a[acNum].Balance);
+}
+
+void DepositeCash(struct account a[], int acNum){
+    
+    int amount;
+    printf("\nEnter the amount to deposite : ");
+    scanf("%d",&amount);
+    a[acNum].Balance+=amount;
+    
+    printf("\nYour current balance is %d ",a[acNum].Balance);
+    
+}
+void CreateAccount(struct account a[], int* count){
+    
+   
+    if(*count>99){
+        printf("\nSorry account cannot be created");
+    }
+    int c=*count;
+    
+    printf("\nEnter the name of the user: ");
+    scanf("%s",a[c].name);
+    
+    printf("\nEnter a 4 digit pin for your account : ");
+    scanf("%d",&a[c].password);
+
+    printf("\nEnter the amount to deposite : ");
+    scanf("%d",&a[c].Balance);
+    
+    printf("\n%d",*count);
+    printf("\nYour account has been successfully created .\nYour account number is %d",c);
+    
+     (*count)++;
+    FILE *ptr;
+    char filename[200];
+    sprintf(filename,"%s.txt",a[c].name);
+    ptr=fopen(filename,"w+");
+    fprintf(ptr,"Account holder name : %s\nAccount balance : %d",a[c].name,a[c].Balance);
+    fclose(ptr);
+
+}
+
+int Login(struct account a[]){
+    int acNum;
+    printf("Enter your account number : ");
+    scanf("%d",&acNum);
+
+    int Pin;
+    printf("Enter your account pin : ");
+    scanf("%d",&Pin);
+    
+    
+    if(a[acNum].password==Pin){
+        
+        while(1){
+            int option;
+        printf("\nChoose an option : \n1)Transfer Money\n2)Check Balance\n3)Deposit Cash\n4)Exit\n");
+        scanf("%d",&option);
+        
+        if(option==1){
+            TransferMoney(a,acNum);
+        }
+        
+        else if(option==2){
+            CheckBalance(a,acNum);
+        }
+        
+        else if(option==3){
+            DepositeCash(a,acNum);
+        }   
+        else if(option==4){
+            return 0;
+        }
+    }
+        
+    }
+    else{
+        printf("\nInvlaid account number or pin number");
+        return 0;
+    }
+    
+    return 0;
+}
+
+
+int main() {
+    
+    struct account a[100];
+    int count=0;
+    
+    while(1){
+        int option;
+    printf("\nChoose an option: \n1)Login to your account\n2)Create a new account\n3)Exit\n");
+    scanf("%d",&option);
+    
+    if(option==1){
+        Login(a);
+    }
+    
+    else if(option==2){
+        CreateAccount(a,&count);
+    }
+    
+    else if(option==3){
+        return 0;
+    }
+    }
+    
+
+    return 0;
+}
