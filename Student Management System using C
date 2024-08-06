@@ -1,0 +1,232 @@
+
+#include <stdio.h>
+#include <string.h>
+//struct to store the student details
+struct student
+{
+    int rollNo;
+    char name[50];
+    int numCourse;
+    int courseId[5];
+};
+
+//function to create a student 
+void AddStudent(struct student s[],int *count){
+    printf("\nEnter the student's first name : ");
+    scanf("%s",s[*count].name);
+    
+    printf("\nEnter the roll number of the student : ");
+    scanf("%d",&s[*count].rollNo);
+    
+    printf("\nEnter the number of courses the student registered : ");
+    scanf("%d",&s[*count].numCourse);
+    
+    for(int i=0;i<s[*count].numCourse;i++){
+        printf("\nEnter the course id of %d subject ",i+1);
+        scanf("%d",&s[*count].courseId[i]);
+    }
+    printf("\nStudent registration completed");
+    (*count)++;
+}
+
+//Function to find the student using rollNumber
+void FindStudent(struct student s[], int* count){
+    
+    //a flag integer to check if student is found or not
+    int flag=1;
+    //declare an int to store the rollnumber entered by user
+    int rollNumber;
+    printf("\nEnter the roll number of the student : ");
+    scanf("%d",&rollNumber);
+    
+    for(int i=0;i<*count;i++){
+        if(s[i].rollNo==rollNumber){
+            flag=0;
+            printf("\nName : %s",s[i].name);
+            printf("\nNumber of courses registered : %d",s[i].numCourse);
+            
+            for(int j=0;j<s[i].numCourse;j++){
+                printf("\nCourse : %d ",s[i].courseId[j]);
+            }
+        }
+    }if(flag==1){
+        printf("\nStudent not found");
+    }
+    
+}
+
+//Function to find the student using given first name
+void FindStudentName(struct student s[], int* count){
+    //a flag integer to check if student is found or not
+    int flag=1;
+    //declare an int to store the rollnumber entered by user
+    char name[50];
+    printf("\nEnter the first name of the student : ");
+    scanf("%s",name);
+    
+    for(int i=0;i<*count;i++){
+        if(strcmp(s[i].name,name)==0){
+            flag=0;
+            printf("\nName : %s",s[i].name);
+            printf("\nNumber of courses registered : %d",s[i].numCourse);
+            
+            for(int j=0;j<s[i].numCourse;j++){
+                printf("\nCourse : %d ",s[i].courseId[j]);
+            }
+        }
+    }if(flag==1){
+        printf("\nStudent not found");
+    }
+}
+
+//Function to find the students registered in a course
+void StudentList(struct student s[],int *count){
+    
+    int id , number=0;
+    printf("\nEnter the course id : ");
+    scanf("%d",&id);
+    
+    printf("\nList of students : ");
+    for(int i=0;i<*count;i++){
+        for(int j=0;j<s[i].numCourse;j++){
+            if(s[i].courseId[j]==id){
+                printf("\n%s",s[i].name);
+                number++;
+            }
+        }
+    }printf("\nTotal number of students registered are %d",number);
+}
+
+//Function to count the total number of students in the system
+void StudentCount(int* count){
+    printf("\nThe total number of students : %d",*count);
+}
+
+//Function to delete a student
+void DeleteStudent(struct student s[], int* count){
+    
+    int roll;
+    printf("\nEnter the roll number : ");
+    scanf("%d",&roll);
+    
+    for(int i=0;i<*count;i++){
+        if(s[i].rollNo==roll){
+            for(int j=i;j<*count-1;j++){
+                s[j].rollNo=s[j+1].rollNo;
+                strcpy(s[j].name,s[j+1].name);
+                s[j].numCourse=s[j+1].numCourse;
+                
+                for(int k=0;k<s[j].numCourse;k++){
+                    s[j].courseId[k]=s[j+1].courseId[k];
+                }
+            }
+        }
+    }
+    (*count)--;
+    printf("count : %d",*count);
+    printf("\nStudent details deleted successfully");
+}
+
+//Fuction to update the student details
+int UpdateStudent(struct student s[], int *count){
+    
+    while(1){
+        int option;
+        printf("\nChoose an option : \n1)Update Student Name\n2)Update Student roll number\n3)Update Number of courses\n4)Exit\n");
+        scanf("%d",&option);
+        
+        
+        if(option==1){
+            int num;
+        printf("\nEnter the roll number of the student : ");
+        scanf("%d",&num);
+            for(int i=0;i<*count;i++){
+                if(s[i].rollNo==num){
+                    printf("\nEnter the updated name : ");
+                    scanf("%s",s[i].name);
+                }
+            } printf("\nUpdation done successfully");
+        }
+        
+        else if(option==2){
+            int num;
+        printf("\nEnter the roll number of the student : ");
+        scanf("%d",&num);
+            for(int i=0;i<*count;i++){
+                if(s[i].rollNo==num){
+                    printf("\nEnter the updated roll Number : ");
+                    scanf("%d",&s[i].rollNo);
+                }
+            } printf("\nUpdation done successfully");
+        }
+        
+        else if(option==3){
+            int num;
+        printf("\nEnter the roll number of the student : ");
+        scanf("%d",&num);
+            for(int i=0;i<*count;i++){
+                if(s[i].rollNo==num){
+                    printf("\nEnter the updated course number : ");
+                    scanf("%d",&s[i].numCourse);
+                      for(int j=0;j<s[i].numCourse;j++){
+                        printf("\nEnter the course id of %d subject ",j+1);
+                        scanf("%d",&s[i].courseId[j]);
+    }
+                }
+            } printf("\nUpdation done successfully");
+        }
+        
+       
+        else if(option==4){
+           return 0;
+        }
+    }
+}
+int main() {
+    
+    struct student s[100];
+    int count=0;
+    while(1){
+        int option;
+        printf("\nChoose an option : \n1)Add Student\n2)Find Student using roll number\n3)Find student using First name\n4)List of students registered for a particualr course\n5)Print total number of students\n6)Delete a student\n7)Update Student\n8)Exit\n");
+        scanf("%d",&option);
+        
+        switch(option)
+        {
+            case 1:
+            AddStudent(s,&count);
+            break;
+            
+            case 2:
+            FindStudent(s,&count);
+            break;
+            
+            case 3:
+            FindStudentName(s,&count);
+            break;
+            
+            case 4:
+            StudentList(s,&count);
+            break;
+            
+            case 5:
+            StudentCount(&count);
+            break;
+            
+            case 6:
+            DeleteStudent(s,&count);
+            break;
+            
+            case 7:
+            UpdateStudent(s,&count);
+            break;
+            
+            case 8:
+            return 0;
+        }
+        
+    }
+    
+    
+    return 0;
+}
