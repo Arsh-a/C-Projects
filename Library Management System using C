@@ -1,0 +1,143 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+//structure to store the book details
+struct book{
+    int id; //stores the unique book id
+    char name[150]; //store the book's name
+    char author[50]; //store the author's name
+    int price; //store the book's price
+    int pages; //stores the total pages of the book
+};
+// Function to remove newline character if present
+void removeNewline(char* str) {
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = '\0';
+    }
+}
+// Function to flush the input buffer
+void flushInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+//Function to add a book into the collection
+void AddBook(struct book k[], int *count){
+    
+    //collect input details from the user
+    printf("Enter the unique id : ");
+    scanf("%d",&k[*count].id);
+    
+    flushInputBuffer();
+    printf("Enter the name of the book : ");
+    fgets(k[*count].name,sizeof(k[*count].name),stdin);
+    removeNewline(k[*count].name);
+    //flushInputBuffer();
+
+    printf("Enter the name of the author : ");
+    fgets(k[*count].author,sizeof(k[*count].author),stdin);
+    removeNewline(k[*count].author);
+    
+    printf("Enter the price : ");
+    scanf("%d",&k[*count].price);
+    
+    printf("Enter the number of pages : ");
+    scanf("%d",&k[*count].pages);
+    
+    (*count)++;
+}
+
+//Function to display the book details
+void BookDetails(struct book k[], int* count){
+    
+    //get the unique id of the book from user
+    int id;
+    printf("\nEnter the unique id of the book : ");
+    scanf("%d",&id);
+    int flag=0;
+    
+    for(int i=0;i<*count;i++){
+        if(k[i].id==id){
+        flag=1;
+        printf("\nUnique id : %d",k[i].id);
+        printf("\nName of the book :");
+        puts(k[i].name);
+        printf("Name of the author :");
+        puts(k[i].author);
+        printf("No. of pages : %d",k[i].pages);
+        printf("\nPrice : %d",k[i].price);
+        break;
+    }
+}
+    if(flag==0){
+        printf("\nBook not found");
+    }
+}
+
+//Function to list all books of a particular author
+void AuthorBookList(struct book k[], int* count){
+    //take author name from the user
+    char name[50];
+    
+    flushInputBuffer();
+    printf("\nEnter the author's name : ");
+    fgets(name,sizeof(name),stdin);
+    removeNewline(name);
+    
+    puts(name);
+    int flag=0;
+    for(int i=0;i<(*count);i++){
+        
+        if(strcmp(k[i].author,name)==0)
+        {
+            printf("\n%d.",i+1);
+            puts(k[i].name);
+            flag=1;
+        }
+    }
+    if(flag=0){
+        printf("\nNo books found.");
+    }
+}
+
+//function to count the number of books
+void CountBooks(int *count){
+    printf("The total number of books in the library is : %d",*count);
+}
+int main() {
+    
+    int count=0;
+    struct book k[10];
+    
+    while(1){
+        
+        int option;
+        printf("\nChoose an option : \n1)Add Book\n2)Display details of a book\n3)List books of a particualr author\n4)Show total number of books\n5)Exit\nEnter your option : ");
+         scanf("%d",&option);
+    
+        switch (option){
+        case 1:
+        AddBook(k,&count);
+        break;
+        
+        case 2:
+        BookDetails(k,&count);
+        break;
+        
+        case 3:
+        AuthorBookList(k,&count);
+        break;
+        
+        case 4:
+        CountBooks(&count);
+        break;
+        
+        case 5:
+        return 0;
+    }
+    
+    }
+
+    return 0;
+}
