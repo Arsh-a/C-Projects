@@ -1,0 +1,120 @@
+
+#include <stdio.h>
+#include <string.h>
+//structure to store employee details
+struct employee{
+    char name[50];
+    int id;
+    char designation[50];
+    int age;
+    int experience;
+};
+
+void DeleteNewLine(char* str){
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+
+void flushBuffer(){
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+//fuction to add new employee
+void AddEmployee(struct employee e[], int* count){
+    
+    flushBuffer();
+    printf("\nEnter the name of the employee : ");
+    fgets(e[*count].name,sizeof(e[*count].name),stdin);
+    DeleteNewLine(e[*count].name);
+    
+    printf("Enter the designation : ");
+    fgets(e[*count].designation,sizeof(e[*count].designation),stdin);
+    DeleteNewLine(e[*count].designation); 
+    
+    printf("Enter the age : ");
+    scanf("%d",&e[*count].age);
+    
+    printf("Enter the experience : ");
+    scanf("%d",&e[*count].experience);
+    
+    e[*count].id=*count;
+    
+    printf("\nEmployee details added successfully\nEmpoyee id : %d",e[*count].id);
+    (*count)++;
+}
+//function to delete the employee
+void DeleteEmployee(struct employee e[], int *count){
+    int id;
+    printf("\nEnter the id : ");
+    scanf("%d",&id);
+    
+    for(int i=0;i<*count;i++){
+        if(e[i].id==id){
+            for(int j=i;j<*count-1;j++){
+                e[j]=e[j+1];
+            }
+            (*count)--;
+            break;
+        }
+    }printf("\nEmployee details deleted successfully");
+}
+
+//fuction to search employee with id
+void SearchEmployee(struct employee e[], int* count){
+    int id;
+    printf("\nEnter the employee id : ");
+    scanf("%d",&id);
+    
+    //setting a flag to check if emplyee is found or not
+    int flag=0;
+    for(int i=0;i<*count;i++)
+    {
+        if(e[i].id==id){
+            
+            flag=1;
+            printf("\nEmployee id : %d",e[i].id);
+            
+            printf("\nEmployee name: ");
+            puts(e[i].name);
+            
+            printf("Designation : ");
+            puts(e[i].designation);
+            
+            printf("Age : %d",e[i].age);
+            printf("\nExperience : %d",e[i].experience);
+        }
+    }if(flag==0){
+        printf("\nEmployee not found");
+    }
+}
+int main() {
+    
+    int count=0;
+    struct employee e[100];
+    while(1){
+        int option;
+        printf("\n1)Add Employee\n2)Delete Employee\n3)Search Employee\n4)Exit\nChoose an option : ");
+        scanf("%d",&option);
+        
+        switch(option)
+        {
+            case 1:
+            AddEmployee(e,&count);
+            break;
+            
+            case 2:
+            DeleteEmployee(e, &count);
+            break;
+            
+            case 3:
+            SearchEmployee(e,&count);
+            break;
+            
+            case 4:
+            return 0;
+        }
+    }
+    return 0;
+}
