@@ -1,0 +1,240 @@
+//Hospital Management System
+#include <stdio.h>
+#include <string.h>
+//struct to store the hospital data
+struct hospital{
+    char name[100];
+    char city[100];
+    int beds;
+    int price;
+    float rating;
+    int reviews;
+};
+
+//struct to store the patient details
+struct patient{
+    char name[50];
+    int age;
+};
+//Function to remove new line
+void deleteNextLine(char* str){
+    size_t length= strlen(str);
+    for(int i=0;i<length;i++){
+        if(length>0 && str[length-1]=='\n'){
+            str[length-1]='\0';
+        }
+}
+}
+//Function to clear the buffer
+void FlushBuffer(){
+    int ch;
+    while(ch=getchar()!='\n' && ch!=EOF);
+}
+//Function to add hospitals
+void AddHospital(struct hospital h[], int* count1){
+    
+    FlushBuffer();
+    printf("\nEnter the hospital name : ");
+    fgets(h[*count1].name,sizeof(h[*count1].name),stdin);
+    deleteNextLine(h[*count1].name);
+    
+    printf("\nEnter the city : ");
+    fgets(h[*count1].city,sizeof(h[*count1].city),stdin);
+    deleteNextLine(h[*count1].city);
+    
+    printf("\nEnter the no. of beds availiable : ");
+    scanf("%d",&h[*count1].beds);
+    
+    printf("\nEnter the price per bed : ");
+    scanf("%d",&h[*count1].price);
+    
+    printf("\nEnter the rating");
+    scanf("%f",&h[*count1].rating);
+    
+    printf("\nEnter the reviews");
+    scanf("%d",&h[*count1].reviews);
+    
+    (*count1)++;
+    
+}
+//Function to add patient
+void AddPatient(struct patient p[], int* count2){
+    FlushBuffer();
+    printf("\nEnter the name : ");
+    fgets(p[*count2].name,sizeof(p[*count2].name),stdin);
+    deleteNextLine(p[*count2].name);
+    
+    printf("\nEnter the age : ");
+    scanf("%d",&p[*count2].age);
+    
+    (*count2++);
+}
+//Function to sort the hospital by bed price
+void sortHospitalByPrice(struct hospital h[], int* count1){
+    for(int i=0;i<*count1;i++){
+        for(int j=0;j<*count1-2-i;j++){
+            if(h[j].price>h[j+1].price){
+                struct hospital temp=h[j];
+                h[j]=h[j+1];
+                h[j+1]=temp;
+            }
+        }
+    }
+    for(int i=0;i<*count1;i++){
+        printf("%d.",i+1);
+        puts(h[i].name);
+    }
+}
+//Function to sort the hospital by rating and reviews
+void sortHospitalByRatingAndReviews(struct hospital h[], int* count1){
+    for(int i=0;i<*count1;i++){
+        for(int j=0;j<*count1-2-i;j++){
+            if(h[j].rating>h[j+1].rating  && h[j].reviews>h[j+1].reviews){
+                struct hospital temp=h[j];
+                h[j]=h[j+1];
+                h[j+1]=temp;
+            }
+        }
+    }
+    for(int i=0;i<*count1;i++){
+        printf("%d.",i+1);
+        puts(h[i].name);
+    }
+}
+//Function to sort the hospital by beds
+void sortHospitalByBeds(struct hospital h[], int* count1){
+    for(int i=0;i<*count1;i++){
+        for(int j=0;j<*count1-2-i;j++){
+            if(h[j].beds>h[j+1].beds){
+                struct hospital temp=h[j];
+                h[j]=h[j+1];
+                h[j+1]=temp;
+            }
+        }
+    }
+    for(int i=0;i<*count1;i++){
+        printf("%d.",i+1);
+        puts(h[i].name);
+    }
+}
+//Fuction to sort the hospital by name
+void sortHospitalByName(struct hospital h[], int* count1){
+    
+    FlushBuffer();
+    
+    char city[100];
+    printf("\nEnter the city : ");
+    fgets(city,sizeof(city),stdin);
+    deleteNextLine(city);
+    
+    for(int i=0;i<*count1;i++){
+        for(int j=0;j<*count1-2-i;j++){
+            if(strcmp((h[j].city),city)==0){
+                if(strcmp(h[j].name,h[j+1].name)>0){
+                struct hospital temp=h[j];
+                h[j]=h[j+1];
+                h[j+1]=temp;
+            }
+            }
+        }
+    }
+    for(int i=0;i<*count1;i++){
+        printf("%d.",i+1);
+        puts(h[i].name);
+    }
+}
+
+//Function to print the patient details
+void displayPatientDetails(struct patient p[], int *count2){
+    char name[100];
+    FlushBuffer();
+    printf("\nEnter the patient name : ");
+    fgets(name,sizeof(name),stdin);
+    deleteNextLine(name);
+    
+    for(int i=0;i<*count2;i++){
+        if(strcmp(p[i].name,name)==0)
+        {
+            printf("\nPatient Name : ");
+            puts(p[i].name);
+            
+            printf("\nAge : %d",p[i].age);
+            
+        }
+}
+}
+//Function to print the Hospital Data
+void displayHospitalDetails(struct hospital h[], int* count1)
+{
+    char name[100];
+    FlushBuffer();
+    printf("\nEnter the hospital name : ");
+    fgets(name,sizeof(name),stdin);
+    deleteNextLine(name);
+    
+    for(int i=0;i<*count1;i++){
+        if(strcmp(h[i].name,name)==0)
+        {
+            printf("\nHospital Name : ");
+            puts(h[i].name);
+            printf("\nCity : ");
+            puts(h[i].city);
+            printf("\nNumber of beds availiable : %d",h[i].beds);
+            printf("\nPrice per bed : %d",h[i].price);
+            printf("\nRating: %f",h[i].rating);
+            printf("\nReviews : %d",h[i].reviews);
+            
+        }
+    }
+}
+int main() {
+    
+    int count1=0, count2=0;
+    struct hospital h[100];
+    struct patient p[100];
+    
+    int option;
+    printf("\nChoose an option/n1)Add Hospital\n2)Add Patient\n3)Display patient details\n4)Display hospital details\n5)Sort hospital by name\n6)Sort hospital by bed price\n7)Sort hospital by no. of availiable beds\n8)Sort hospital by rating  and reviews\n9)Exit");
+    scanf("%d",&option);
+    while(1){
+        switch(option){
+        case 1:
+        AddHospital(h,&count1);
+        break;
+        
+        case 2:
+        AddPatient(p,&count2);
+        break;
+        
+        case 3:
+        displayPatientDetails(p,&count2);
+        break;
+        
+        case 4:
+        displayHospitalDetails(h,&count1);
+        break;
+        
+        case 5:
+        sortHospitalByName(h,&count1);
+        break;
+        
+        case 6:
+        sortHospitalByPrice(h,&count1);
+        break;
+        
+        case 7:
+        sortHospitalByBeds(h,&count1);
+        break;
+        
+        case 8:
+        sortHospitalByRatingAndReviews(h,&count1);
+        break;
+        
+        case 9:
+        return 0;
+    }
+
+    }
+    
+    return 0;
+}
