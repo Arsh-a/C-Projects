@@ -1,0 +1,229 @@
+//Online bus reservation system using c
+#include <stdio.h>
+#include <string.h>
+struct passenger{
+    char name[50];
+    int age;
+    char password[50];
+    int busId;
+    int id;
+};
+
+struct bus{
+    int id;
+    char departure[15];
+    char destination[15];
+    int totalSeats;
+    int availableSeats;
+    char depTime[10];
+    char passengerName[50][20];
+    int seatNo;
+};
+
+void FlushBuffer(){
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+
+void RemoveNewLine(char* str){
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+void BookTicket(struct bus b[],struct passenger p[],int id){
+    
+    //Obtaining the users preferences
+    FlushBuffer();
+    char departure[15];
+    printf("Enter the place of departure: ");
+    fgets(departure, sizeof(departure),stdin);
+    RemoveNewLine(departure);
+    
+   
+    char destination[15];
+    printf("Enter the place of destination: ");
+    fgets(destination, sizeof(destination),stdin);
+    RemoveNewLine(destination);
+    
+    
+    for(int i=0;i<3;i++)
+    {
+        
+        if( (strcmp(departure,b[i].departure)==0)  && (strcmp(destination, b[i].destination)==0)){
+            printf("inside booking");
+            
+            int seats;
+            printf("Enter the number of seats required : ");
+            scanf("%d",&seats);
+            
+            if(seats<b[i].availiableSeats || b[i].availiableSeats!=0){
+                
+                p[id].busId=b[i].id;
+            b[i].availiableSeats-=seats;
+            
+            FlushBuffer();
+            for(int j=0;j<seats;j++)
+            {
+                printf("Enter the passenger names : ");
+                fgets(b[i].passengerName[j],sizeof(b[i].passengerName[j]),stdin);
+                RemoveNewLine(b[i].passengerName[j]);
+            }
+            
+            
+            printf("Ticket booked successfully");
+            printf("\nSeat numbers are : ");
+            for(int k=0;k<seats;k++)
+            {
+                printf("\t%d",( (b[i].totalSeats-b[i].availiableSeats)+1+k));
+            }
+            printf("\n");
+            }
+            else{
+                printf("\nNo seats availiable");
+            }
+            
+        }
+    }
+}
+void CancelTicket(struct passenger p[], struct bus b[],int id){
+    
+    int seats;
+    printf("\nEnter the number of seats booked : ");
+    scanf("%d",&seats);
+    
+    int idbus=p[id].busId;
+    b[idbus].availiableSeats+=seats;
+    
+    for(int i=0;i<seats;i++){
+        int num;
+        printf("\nenter the seat number: ");
+        b[i].passengerName[num][20]='\0';
+    }
+    
+    printf("\nTickets cancelled successfully");
+}
+void CreateUser(struct passenger p[], int* count){
+    
+    //Obtain passenger details such as name, age,password
+    FlushBuffer();
+    printf("\nEnter the username : ");
+    fgets(p[*count].name, sizeof(p[*count].name),stdin);
+    RemoveNewLine(p[*count].name);
+    
+    
+    printf("\nSet a password : ");
+    fgets(p[*count].password, sizeof(p[*count].name),stdin);
+    RemoveNewLine(p[*count].password);
+    
+    printf("\nEnter your age : ");
+    scanf("%d",&p[*count].age);
+    
+    p[*count].id=*count;
+    (*count)++;
+    
+    printf("\nUser Account created SUCCESSFULLY");
+}
+
+void BusDetails(struct bus b[], struct passenger p[]){
+    
+    for(int i=0;i<3;i++){
+        if(p[i].busId==b[i].id){
+            printf("\nbus id : %d",b[i].id);
+            printf("\nDeparture :");
+            puts(b[i].departure);
+            
+            printf("\nDestination :");
+            puts(b[i].destination);
+            
+            printf("\nDeparture time :");
+            puts(b[i].depTime);
+        }
+    }
+}
+int Login(struct bus b[],struct passenger p[], int* count){
+    
+    char name[50];
+    FlushBuffer();
+    printf("Enter the username: ");
+    fgets(name, sizeof(name),stdin);
+    RemoveNewLine(name);
+    
+    
+    char password[20];
+    printf("Enter the password: ");
+    fgets(password, sizeof(password),stdin);
+    RemoveNewLine(password);
+    
+    for(int i=0;i<*count;i++){
+        if( strcmp(name,p[i].name)==0 && strcmp(password, p[i].password)==0)
+        {
+            int id=p[i].id;
+            int option;
+            while(1){
+                printf("Choose an option: \n1)Book ticket\n2)Cancel ticket\n3)Bus details\n4)Exit :");
+            scanf("%d",&option);
+            
+            switch(option){
+                case 1:
+                BookTicket(b,p,id);
+                break;
+                
+                case 2:
+                CancelTicket(p,b,id);
+                break;
+                
+                case 3:
+                BusDetails(b,p);
+                break;
+                
+                case 4:
+                return 0;
+            }
+            }
+            
+        }
+        else{
+            printf("\nInvalid password\n");
+        }
+    }
+}
+int main() {
+    
+    struct passenger p[100];
+    struct bus b[3]= {
+        {
+            0,"Chennai","Bangalore",50,50,"10.00AM",0
+        },
+        {
+            1,"Trivandrum","Chennai",50,50,"11.00PM",0
+        },
+        {
+            2,"Trivandrum","Bangalore",50,50,"2.00PM",0
+        }
+    };
+    
+    int count=0;
+    
+    int option;
+    while(1){
+        printf("\nChoose an option : \n1)Create Account\n2)User Login\n3)Exit : ");
+    scanf("%d",&option);
+    
+    switch(option){
+        case 1: 
+        CreateUser(p,&count);
+        break;
+        
+        case 2:
+        Login(b,p,&count);
+        break;
+        
+        case 3:
+        return 0;
+    }
+    }
+    
+
+    return 0;
+}
