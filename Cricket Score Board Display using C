@@ -1,0 +1,179 @@
+#include <stdio.h>
+#include <string.h>
+
+struct batsman{
+    char name[20];
+    int ones, twos, fours, six, balls,t_runs;
+    float sr;
+};
+
+struct bowler{
+    char name[20];
+    int wickets, overs, runs;
+    float economy;
+};
+
+void FlushBuffer(){
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+
+void removeNewLine(char* str){
+    size_t len =strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+void Batsman(struct batsman b[],int *countBat){
+    for(int i=0;i<*countBat;i++){
+        
+        FlushBuffer();
+        printf("\nEnter the name of the batsman : ");
+        fgets(b[i].name,sizeof(b[i].name),stdin);
+        removeNewLine(b[i].name);
+        
+        printf("\nEnter the number of ones scored : ");
+        scanf("%d",&b[i].ones);
+        
+        printf("\nEnter the number of twos scored : ");
+        scanf("%d",&b[i].twos);
+        int twosc=2*b[i].twos;
+        
+        printf("\nEnter the number of fours scored : ");
+        scanf("%d",&b[i].fours);
+        int foursc=4*b[i].fours;
+        
+        printf("\nEnter the number of sixes scored : ");
+        scanf("%d",&b[i].six);
+        int sixsc=6*b[i].six;
+        
+        printf("\nEnter the number of balls faced : ");
+        scanf("%d",&b[i].balls);
+        
+        b[i].t_runs=b[i].ones+twosc+foursc+sixsc;
+        b[i].sr=(b[i].t_runs/b[i].balls)*100;
+    }
+}
+
+void Bowler(struct bowler bo[],int *countBall){
+    for(int i=0;i<*countBall;i++){
+        
+        FlushBuffer();
+        printf("\nEnter the name of the bowler : ");
+        fgets(bo[i].name,sizeof(bo[i].name),stdin);
+        removeNewLine(bo[i].name);
+        
+        printf("\nEnter the number of wickets taken : ");
+        scanf("%d",&bo[i].wickets);
+        
+        printf("\nEnter the number of overs : ");
+        scanf("%d",&bo[i].overs);
+        
+        printf("\nEnter the runs : ");
+        scanf("%d",&bo[i].runs);
+        
+        bo[i].economy=(bo[i].runs)/(bo[i].overs);
+    }
+}
+
+void BatsmanDetails(struct batsman b[], int* countBat){
+    
+    char name[20];
+    FlushBuffer();
+    printf("\nEnter the batsman name : ");
+    fgets(name,sizeof(name),stdin);
+    removeNewLine(name);
+    
+    puts(name);
+    printf("%d",*countBat);
+    puts(b[0].name);
+    for(int i=0;i<*countBat;i++){
+        printf("%d",i);
+        puts(b[i].name);
+        printf("%s",b[i].name);
+        if(strcmp(name,b[i].name)==0){
+            printf("Batsman     runs    fours   sixes   sr");
+            printf("=======================================\n");
+            printf("    %s        %d      %d      %d      %0.2f",b[i].name,b[i].t_runs,b[i].fours,b[i].six,b[i].sr);
+        }
+    }
+}
+
+void BowlerDetails(struct bowler bo[], int* countBall){
+    
+    char name[20];
+    FlushBuffer();
+    printf("\nEnter the bowler name : ");
+    fgets(name,sizeof(name),stdin);
+    removeNewLine(name);
+    
+    for(int i=0;i<*countBall;i++){
+        if(strcmp(name,bo[i].name)==0){
+            printf("Bowler     wickets    runs   economy ");
+            printf("====================================");
+            printf("    %s        %d      %d     %0.2f",bo[i].name,bo[i].wickets,bo[i].runs,bo[i].economy);
+        }
+    }
+}
+void MatchSummary(struct batsman b[], struct bowler bo[], int* countBat, int* countBall){
+    
+    int maxr=0,maxf=0,maxs=0;
+    for(int i=0;i<*countBat;i++){
+        if(b[*countBat].t_runs>maxr){
+            maxr=b[*countBat].t_runs;
+        }
+        if(b[*countBat].fours>maxf){
+            maxf=b[*countBat].fours;
+        }
+        if(b[*countBat].six>maxs){
+            maxs=b[*countBat].six;
+        }
+    }
+    
+    printf("\nHighest runs : %d\nLargest number of fours : %d\nLargest number of sixes : %d",maxr,maxf,maxs);
+}
+int main(){
+    
+    struct batsman b[10];
+    struct bowler bo[10];
+    int countBat=0;
+    printf("\nObtaining batsman details");
+    printf("\nEnter the number of batsmen : ");
+    scanf("%d",&countBat);
+    
+    Batsman(b,&countBat);
+    
+    int countBall=0;
+    printf("\nObtaining bowler details");
+    printf("\nEnter the number of bowlers : ");
+    scanf("%d",&countBall);
+    
+    Bowler(bo,&countBall);
+    
+    while(1){
+        int option;
+        printf("\nEnter an option : \n1)Batsman Details\n2)Bowler Details\n3)Match Summary\n4)Exit : ");
+        scanf("%d",&option);
+        
+        switch(option){
+            
+            case 1:
+            BatsmanDetails(b,&countBat);
+            break;
+            
+            case 2:
+            BowlerDetails(bo,&countBall);
+            break;
+            
+            case 3:
+            MatchSummary(b,bo,&countBat,&countBall);
+            break;
+            
+            case 4:
+            return 0;
+        }
+        
+        
+    }
+    return 0;
+}
