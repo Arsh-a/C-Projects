@@ -1,0 +1,115 @@
+//Online voting system
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct candidate{
+    char name[50];
+    char symbol[10];
+    int NumberOfVotes;
+};
+
+void FlushBuffer(){
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+
+void RemoveNextLine(char* str)
+{
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+//function to enter the candidate details
+void fillCandidate(struct candidate c[], int CandidateCount){
+    
+               FlushBuffer();
+    for(int i=0;i<CandidateCount;i++){
+
+    printf("\nEnter the name of the candidate : ");
+    fgets(c[i].name,sizeof(c[i].name),stdin);
+    RemoveNextLine(c[i].name);
+    
+    printf("\nEnter the symbol : ");
+    fgets(c[i].symbol,sizeof(c[i].symbol),stdin);
+    RemoveNextLine(c[i].symbol);   
+    }
+}
+void DisplayCandidates(struct candidate c[], int CandidateCount){
+    
+      printf("\nCandidate             symbol");
+      printf("\n================================");
+    for(int i=0;i<CandidateCount;i++){
+            
+          
+            printf("\n      %s                   %s",c[i].name,c[i].symbol);
+        }
+}
+void Vote(struct candidate c[], int voters[], int CandidateCount){
+    int id;
+    printf("\nEnter the id : ");
+    scanf("%d",&id);
+    
+    if(voters[id]==0){
+        DisplayCandidates(c,CandidateCount);
+        
+        FlushBuffer();
+        char symbol[10];
+        printf("\n================Voting====================");
+        printf("\nEnter the symbol : ");
+        fgets(symbol,sizeof(symbol),stdin);
+        RemoveNextLine(symbol);
+        
+        for(int i=0;i<CandidateCount;i++){
+            if(strcmp(symbol,c[i].symbol)==0)
+            {
+                c[i].NumberOfVotes++;
+            }
+        }
+        voters[id]=1;
+        printf("\nVote casted successfully.");
+    }
+    
+    else{
+        printf("\nYou have already casted your vote.");
+    }
+}
+
+//function to display the result
+void result(struct candidate c[], int CandidateCount){
+    
+    int max=0,flag=0;
+    for(int i=0;i<CandidateCount;i++){
+            
+            if(c[i].NumberOfVotes>max){
+                max=c[i].NumberOfVotes;
+                flag=i;
+            }
+            printf("\nVotes obtained for %s is %d",c[i].name, c[i].NumberOfVotes);
+        }
+        
+        printf("\nThe winner is : ");
+        puts(c[flag].name);
+}
+
+int main() {
+    
+    struct candidate c[10];
+        
+    int CandidateCount;//stores the number of candidates
+    printf("\nEnter the number of candidates : ");
+    scanf("%d",&CandidateCount);
+    
+    fillCandidate(c,CandidateCount);
+    
+    int* voters;
+    voters = (int*) malloc (50*sizeof(int));
+    memset(voters,0,sizeof(voters));
+    
+    for(int i=0;i<3;i++){
+        Vote(c,voters,CandidateCount);
+    }
+    
+    result(c,CandidateCount);
+    return 0;
+}
