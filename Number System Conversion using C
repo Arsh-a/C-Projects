@@ -1,0 +1,135 @@
+
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+
+void reverseString(char* str) {
+    int n = strlen(str);
+    for (int i = 0; i < n / 2; i++) {
+        char temp = str[i];
+        str[i] = str[n - i - 1];
+        str[n - i - 1] = temp;
+    }
+}
+void FlushBuffer()
+{
+    int ch;
+    while((ch=getchar())!='\n' && ch!=EOF);
+}
+
+void RemoveNextLine(char* str){
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+//function to convert decimal to binary
+void DecimalToBinary(int decimal){
+    int binary=0;
+     int i=0;
+    while(decimal!=0){
+        int rem=decimal%2;
+        decimal/=2;
+        binary+=rem* pow(10,i);
+        i++;
+    }
+    printf("\n%d",binary);
+}
+
+void BinaryToDecimal(int binary){
+    int decimal=0;
+     int i=0;
+    while(binary!=0){
+        int rem=binary%10;
+        binary/=10;
+        decimal+=rem* pow(2,i);
+        i++;
+    }
+    printf("\n%d",decimal);
+}
+
+void DecimalToOctal(int decimal){
+    int octal=0;
+     int i=0;
+    while(decimal!=0){
+        int rem=decimal%8;
+        decimal/=8;
+        octal+=rem* pow(10,i);
+        i++;
+    }
+    printf("\n%d",octal);
+}
+
+void OctalToDecimal(int octal){
+    int decimal=0;
+     int i=0;
+    while(octal!=0){
+        int rem=octal%10;
+        octal/=10;
+        decimal+=rem* pow(8,i);
+        i++;
+    }
+    printf("\n%d",decimal);
+}
+
+void HexadecimalToBinary()
+{
+    
+    char hex[20];
+    FlushBuffer();
+    printf("\nEnter the hexadecimal : ");
+    fgets(hex,sizeof(hex),stdin);
+    RemoveNextLine(hex);
+    
+    unsigned int hexa;
+    sscanf(hex, "%x", &hexa);
+    
+    char binary[33]="";
+    int i=0;
+    while(hexa){
+        binary[i++] = '0' + hexa % 2;
+        hexa /= 2;
+    }
+    binary[i]='\0';
+    reverseString(binary);
+    printf("\n%s",binary);
+}
+
+
+int main() {
+   while(1){
+       
+       int option;
+       printf("\nChoose an option : \n1)Decimal to Binary\n2)Binary to Decimal\n3)Decimal to Octal\n4)Octal to Decimal\n5)Hexadecimal to Binary\n6)Exit :");
+       scanf("%d",&option);
+       
+       int num;
+       printf("\nEnter the number to be converted : ");
+       scanf("%d",&num);
+       switch (option){
+           case 1:
+           DecimalToBinary(num);
+           break;
+           
+           case 2:
+           BinaryToDecimal(num);
+           break;
+           
+           case 3:
+           DecimalToOctal(num);
+           break;
+           
+           case 4:
+           OctalToDecimal(num);
+           break;
+           
+           case 5:
+           HexadecimalToBinary();
+           break;
+           
+           case 6:
+           return 0;
+   }
+}
+}
