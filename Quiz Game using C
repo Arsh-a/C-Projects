@@ -1,0 +1,99 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
+struct quiz{
+    char question[100];
+    char answer[50];
+};
+//function to create a random number between 0 to 22
+int randomNum()
+{
+    srand(time(0));
+    int randomNum=rand()%21+1;
+    sleep(1);
+    return randomNum;
+}
+//function to flush the buffer
+void FlushBuffer(){
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+
+//function to remove the next line from input
+void RemoveNextLine(char* str){
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+//function to insert the questions into the structure
+void insertQuestion(struct quiz q[])
+{
+     
+}
+//function to conduct the quiz and calculate the score
+void quizMaker(struct quiz q[]){
+    
+    FlushBuffer();
+    char answer[50];
+    int score=0;
+     
+    for(int i=1;i<=5;i++)
+    {
+            
+          int ran=randomNum();
+          printf("\nQuestion : %s",q[ran].question);
+    
+    printf("\nEnter the answer : ");
+    fgets(answer, sizeof(answer),stdin);
+    RemoveNextLine(answer);
+    
+    char str[50]="";
+    for(int j=0;j<strlen(q[ran].answer);j++){
+        str[j]=tolower(q[ran].answer[j]);
+    }
+    str[strlen(q[ran].answer)]='\0';
+    if(strcmp(answer,str)==0)
+    {
+        printf("\nCorrect Answer");
+        score++;
+    }
+    else{
+        printf("\nWrong answer");
+    }
+    }
+    
+    printf("\nQuiz finished, your score ; %d",score);
+    
+    
+}
+int main() {
+  struct quiz q[]={
+        {"What is the capital of France?", "Paris"},
+        {"Who wrote 'To Kill a Mockingbird'?", "Harper Lee"},
+        {"What is the largest planet in our solar system?", "Jupiter"},
+        {"In what year did World War II end?", "1945"},
+        {"What is the chemical symbol for water?", "H2O"},
+        {"Who painted the Mona Lisa?", "Leonardo da Vinci"},
+        {"What is the square root of 64?", "8"},
+        {"Who discovered penicillin?", "Alexander Fleming"},
+        {"What is the currency of Japan?", "Yen"},
+        {"Who was the first President of the United States?", "George Washington"},
+        {"What is the tallest mountain in the world?", "Mount Everest"},
+        {"What is the capital of Italy?", "Rome"},
+        {"What element does 'O' represent on the periodic table?", "Oxygen"},
+        {"What is the smallest prime number?", "2"},
+        {"What is the hardest natural substance on Earth?", "Diamond"},
+        {"Who developed the theory of relativity?", "Albert Einstein"},
+        {"In which country is the Great Barrier Reef?", "Australia"},
+        {"What is the most spoken language in the world?", "Mandarin Chinese"},
+        {"Which planet is known as the Red Planet?", "Mars"},
+        {"What is the longest river in the world?", "Nile"}
+    };
+  quizMaker(q);
+    return 0;
+}
