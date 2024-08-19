@@ -1,0 +1,176 @@
+//telephone billing system
+#include <stdio.h>
+#include <string.h>
+struct customer{
+    char name[50];
+    long phone;
+    float talkTime;
+    float charge;
+};
+void FlushBuffer()
+{
+    int c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+
+void RemoveNextLine(char* str){
+    size_t len=strlen(str);
+    if(len>0 && str[len-1]=='\n'){
+        str[len-1]='\0';
+    }
+}
+void addCustomer(struct customer c[], int* count){
+    
+    FlushBuffer();
+    printf("\nEnter the customer name : ");
+    fgets(c[*count].name, sizeof(c[*count].name),stdin);
+    RemoveNextLine(c[*count].name);
+    
+    printf("Enter the phone number : ");
+    scanf("%ld",&c[*count].phone);
+    
+    (*count)++;
+    
+    printf("Customer account created successfully !!!!!");
+}
+
+void UpdateTalkTime(struct customer c[], int* count, float* amt){
+    long No ,flag=0;
+    printf("Enter the phone number : ");
+    scanf("%ld",&No);
+    
+    for(int i=0;i<*count;i++){
+        if(c[i].phone==No){
+            printf("Enter the new taltime : ");
+            scanf("%f",&c[i].talkTime);
+            c[i].charge = (c[i].talkTime)*(*amt);
+            printf("Bill amount is : %0.2f",c[i].charge);
+            flag=1;
+        }
+    }
+    if(flag==0){
+
+        printf("User not found\n");
+    }
+}
+
+void modifyUser(struct customer c[], int* count)
+{
+    long No,flag=0;
+    printf("Enter the phone number : ");
+    scanf("%ld",&No);
+    
+    for(int i=0;i<*count;i++){
+        if(c[i].phone==No){
+            printf("Enter the new phone number : ");
+            scanf("%ld",&c[i].phone);
+            flag=1;
+        }
+    }
+    if(flag==0){
+
+        printf("User not found\n");
+    }
+}
+
+int deleteCustomer(struct customer c[], int* count){
+    long No;
+    printf("Enter the phone number : ");
+    scanf("%ld",&No);
+    
+    if(No==c[*count-1].phone){
+        (*count)--;
+        return 0;
+    }
+    for(int i=0;i<*count;i++){
+        if(c[i].phone==No){
+            for(int j=i;j<*count-1;j++){
+                strcpy(c[j].name,c[j+1].name);
+                c[j].phone=c[j+1].phone;
+                c[j].talkTime=c[j+1].talkTime;
+                c[j].charge=c[j+1].charge;
+                
+                (*count)--;
+            }
+        }
+        else{
+            printf("User not found\n");
+        }
+    }
+}
+void viewBills(struct customer c[], int* count){
+    
+    printf("\nName                              phone NO.                   Bill Amount\n");
+    for(int i=0;i<*count;i++)
+    {
+        printf("%s                              %ld                         %0.2f\n",c[i].name,c[i].phone,c[i].charge);
+    }
+}
+void searchUser(struct customer c[], int* count){
+    long No,flag=0;
+    printf("Enter the phone number : ");
+    scanf("%ld",&No);
+    
+    for(int i=0;i<*count;i++){
+        if(c[i].phone==No){
+            printf("Name : %s",c[i].name);
+            printf("\nPhone : %ld",c[i].phone);
+            printf("\nTalk time : %f",c[i].talkTime);
+            printf("\nBill Amount : %0.2f",c[i].charge);
+            flag=1;
+        }
+    }
+    if(flag==0){
+
+        printf("User not found\n");
+    }
+}
+int main() {
+    
+    struct customer c[100];
+    int count =0;
+    float amt=0;
+    printf("\nEnter the carge per minute : ");
+    scanf("%f",&amt);
+    
+    while(1){
+        
+        int option;
+        printf("\n********************************************************");
+        printf("\n1)Add Customer\n2)Modify Phone Number\n3)Bill Creation\n4)View Bills\n5)Delete Customer\n6)Search User\n7)Exit\nEnter your option : ");
+        scanf("%d",&option);
+        
+        switch(option){
+            case 1:
+            addCustomer(c,&count);
+            break;
+            
+            case 2:
+            modifyUser(c,&count);
+            break;
+            
+            case 3:
+            UpdateTalkTime(c,&count,&amt);
+            break;
+            
+            case 4:
+            viewBills(c,&count);
+            break;
+            
+            case 5:
+            deleteCustomer(c,&count);
+            break;
+            
+            case 6:
+            searchUser(c,&count);
+            break;
+            
+            case 7:
+            return 0;
+            
+        }
+    }
+    
+
+    return 0;
+}
