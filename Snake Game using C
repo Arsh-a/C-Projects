@@ -1,0 +1,121 @@
+// Snake game
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <termios.h>
+#include <unistd.h>
+#include <fcntl.h>
+int player_x,player_y,fruit_X,fruit_Y,gameOver,score=0,height, width;
+//function to draw the boundary of the game
+void drawBoundary(){
+
+      system("clear"); 
+    for(int i=0;i<height;i++)
+    {
+        for(int j=0;j<width;j++){
+            if(i==0 || j==0 || i==height-1|| j==width-1)
+            {
+                printf("#");
+            }
+            
+            else
+            {
+                
+                //prints the player
+                if(i==(player_x) && j==(player_y))
+                {
+                    printf("0");
+                }
+                
+                //prints the fruit
+                 else if(i==fruit_X && j==fruit_Y)
+                {
+                printf("*");
+                }
+                else
+                {
+                    printf(" ");
+                }
+            }
+        }
+        printf("\n");
+    }
+        
+        printf("\nScore : %d",score);
+        printf("\nPress X to exit the game\n");
+}
+
+void logic(char ip)
+{
+   
+       switch(ip){
+        case 'a':
+        player_y--;
+        break;
+        
+        case 'd':
+        player_y++;
+        break;
+        
+        case 'w':
+        player_x--;
+        break;
+        
+        case 's':
+        player_x++;
+        break;
+        
+        case 'x':
+        gameOver=1;
+        break;
+    }
+    
+     if(player_x==fruit_X && player_y==fruit_Y)
+    {
+        score++;
+         fruit_X = rand() % (width);
+        fruit_Y = rand() % (height);
+    }
+    if(player_y < 0 || player_y > height 
+        || player_x < 0 || player_x > width)
+    {
+        gameOver=1;
+    }
+    
+    
+}
+
+
+int main() {
+    
+    printf("Enter the height : ");
+    scanf("%d",&height);
+    
+    printf("Enter the width : ");
+    scanf("%d",&width);
+    
+    
+// intial positions of the player and the fruit
+   
+      player_x = width / 2;
+    player_y = height / 2;
+    fruit_X = rand() % (width);
+    fruit_Y = rand() % (height);
+    gameOver=0;
+    
+    
+    
+    //implementing the game till game not over
+    char input;
+    do {
+        drawBoundary();
+        input = getchar();
+        logic(input);
+    } while (input != 'x' && gameOver!=1);
+
+    printf("Game over. Final score: %d\n", score);
+    return 0;
+   
+    
+}
