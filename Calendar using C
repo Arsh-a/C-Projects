@@ -1,0 +1,183 @@
+//printing calendar using c programming language
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+//structure to store the no.of days, start day and notes of a month
+struct months {
+	int days;
+	int startDay;
+	//int notes[days];
+};
+//function to find the day of the week using zellers congruence
+void dayOfWeek(int year, int month, struct months m[]) {
+    int mo=month;
+	if(month==1 || month==2)
+	{
+	    
+		month+=12;
+		year--;
+	}
+
+    int day =1; 
+	int k=year%100, j=year/100,h=0;
+	h=1+(13*(month+1))/5;
+
+	h+=k;
+	
+	h=h+(k/4);
+	
+	h=h+(j/4);
+
+	h=(h-(2*j));
+
+// 	int h=(int)(day +((13*(month+1))/5) +k+((k/4))+((j/4))-(2*j));
+	h%=7;
+	
+	if(h<0)
+	{
+	    h+=7;
+	}
+	m[mo-1].startDay=h;
+}
+
+//function to determine the number of days in a month
+int daysOfMonth(int year, struct months m[]) {
+	if((year%4==0 && year%100!=0) || year%400==0)
+	{
+		m[1].days=29;
+	}
+
+	else {
+		m[1].days=28;
+	}
+
+	m[0].days=31;
+	m[2].days=31;
+	m[3].days=30;
+	m[4].days=31;
+	m[5].days=30;
+	m[6].days=31;
+	m[7].days=31;
+	m[8].days=30;
+	m[9].days=31;
+	m[10].days=30;
+	m[11].days=31;
+
+
+}
+
+//function to print the calendar
+int printCalendar(int year, int month, struct months m[])
+{
+	char spell[10];
+	switch(month) {
+	    
+	    
+	    case 1:
+		strcpy(spell,"January");
+		break;
+		
+		case 2:
+		strcpy(spell,"February");
+		break;
+		
+		case 3:
+		strcpy(spell,"March");
+		break;
+		
+		case 4:
+		strcpy(spell,"April");
+		break;
+		
+		case 5:
+		strcpy(spell,"May");
+		break;
+		
+		case 6:
+		strcpy(spell,"June");
+		break;
+		
+		case 7:
+		strcpy(spell,"July");
+		break;
+		
+		case 8:
+		strcpy(spell,"August");
+		break;
+		
+		case 9:
+		strcpy(spell,"September");
+		break;
+		
+		case 10:
+		strcpy(spell,"October");
+		break;
+		
+		case 11:
+		strcpy(spell,"November");
+		break;
+		
+		case 12:
+		strcpy(spell,"December");
+		break;
+		
+	}
+	int start=1;
+	int end=m[month-1].days;
+	printf("                        %s               ",spell);
+	printf("\n");
+	printf("Sat     Sun     Mon     Tue     Wed     Thr     Fri");
+	printf("\n");
+	
+	int flag=0;
+	for(int i=0;i<6;i++)
+        {
+            for(int j=0;j<7;j++)
+            {
+                
+                if(flag==1)
+                {
+                    printf("%d\t",start);
+                    start++;
+                    end--;
+                    if(end==0)
+                    {
+                        return 0;
+                    }
+                }
+                else if(j==m[month-1].startDay)
+                {
+                    printf("%d\t",start);
+                    start++;
+                    end--;
+                    flag=1;
+                }
+                else
+                {
+                    printf("\t");
+                }
+                
+                
+            }printf("\n");
+        }
+    
+}
+int main()
+{
+    
+    struct months m[12];
+    int month, year;
+    
+    printf("Enter the year : ");
+    scanf("%d",&year);
+    
+    printf("Enter the month : ");
+    scanf("%d",&month);
+    
+    daysOfMonth(year,m);
+    dayOfWeek(year,month,m);
+    printCalendar(year,month,m);
+    
+    
+}
