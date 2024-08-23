@@ -1,0 +1,247 @@
+// Tic-Tac-Toe using C
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <conio.h>
+int gameOver=0;
+//function to displayBoard
+void displayBoard(char arr[3][3],char user,char computer)
+{
+  
+    
+    int cell;
+    printf("Enter the cell no.");
+    scanf("%d",&cell);
+    switch(cell){
+        case 1:
+        arr[0][0]=user;
+        break;
+        
+        case 2:
+        arr[0][1]=user;
+        break;
+        
+        case 3:
+        arr[0][2]=user;
+        break;
+        
+        case 4:
+        arr[1][0]=user;
+        break;
+        
+        case 5:
+        arr[1][1]=user;
+        break;
+        
+        case 6:
+        arr[1][2]=user;
+        break;
+        
+        case 7:
+        arr[2][0]=user;
+        break;
+        
+        case 8:
+        arr[2][1]=user;
+        break;
+        
+        case 9:
+        arr[2][2]=user;
+        break;
+    }
+    
+     int cchoice,flag=0;
+    
+    for(int k=0;k<3;k++)
+    {
+        for(int l=0;l<3;l++)
+        {
+            if(arr[k][l]=='\0')
+            {
+                cchoice=rand()%9 +1;
+                flag=1;
+                break;
+            }
+            if(flag==1)
+            {
+                break;
+            }
+            
+        }
+    }
+    
+    switch(cchoice){
+        case 1:
+        arr[0][0]=computer;
+        break;
+        
+        case 2:
+        arr[0][1]=computer;
+        break;
+        
+        case 3:
+        arr[0][2]=computer;
+        break;
+        
+        case 4:
+        arr[1][0]=computer;
+        break;
+        
+        case 5:
+        arr[1][1]=computer;
+        break;
+        
+        case 6:
+        arr[1][2]=computer;
+        break;
+        
+        case 7:
+        arr[2][0]=computer;
+        break;
+        
+        case 8:
+        arr[2][1]=computer;
+        break;
+        
+        case 9:
+        arr[2][2]=computer;
+        break;
+    }
+    
+    
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            if(arr[i][j]=='\0')
+            {
+                printf("\t");
+            }
+            else
+            {
+                printf("%c",arr[i][j]);
+            }
+        }
+        printf("\n");
+    }
+    
+    
+    //horizontal comparison
+    if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    else if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==computer)
+    {
+        gameOver++;
+        printf("Computer won");
+    }
+    
+    if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    else if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==computer)
+    {
+        gameOver++;
+        printf("Computer won");
+    }
+    
+    if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    else if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==computer)
+    {
+        gameOver++;
+        printf("Computer won");
+    }
+    
+    
+    
+    //vertical comparison
+    
+    if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==computer)
+    {
+        gameOver++;
+        printf("computer won");
+    }
+    
+    
+    if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==computer)
+    {
+        gameOver++;
+        printf("computer won");
+    }
+    
+    
+    if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==computer)
+    {
+        gameOver++;
+        printf("computer won");
+    }
+    
+    
+    //checking diagonally
+    
+    if(arr[0][0]==arr[1][1] && arr[1][1]==arr[2][2] && arr[2][2]==user)
+    {
+        gameOver++;
+        printf("you won");
+    }
+    
+    if(arr[0][2]==arr[1][1] && arr[1][1]==arr[2][0] && arr[2][0]==computer)
+    {
+        gameOver++;
+        printf("computer won");
+    }
+    
+    system("clear");
+    sleep(2);
+}
+int main()
+{
+    char choice;
+    printf("Choose a symbol : x or o : ");
+    scanf("%c",&choice);
+    
+    char computer, user;
+    user=choice;
+    if(choice=='x')
+    {
+        computer='o';
+    }
+    else{
+        computer='x';
+    }
+    
+    char arr[3][3];
+    while(gameOver!=1)
+    {
+        displayBoard(arr,user,computer);
+    }
+}
