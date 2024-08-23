@@ -1,4 +1,5 @@
 //printing calendar using c programming language
+/* the functionalities include : printing the calendar of an year, a specific month, add and display notes*/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -7,8 +8,27 @@
 struct months {
 	int days;
 	int startDay;
-	//int notes[days];
 };
+
+	struct notes{
+	    char note[100];
+	};
+	
+//function to flush the buffer
+void FlushBuffer()
+{
+    char c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+//function to remove next line
+void RemoveNextLine(char* str)
+{
+    size_t len = strlen(str);
+    if(len>0 && str[len-1]=='\n')
+    {
+        str[len-1]='\0';
+    }
+}
 //function to find the day of the week using zellers congruence
 void dayOfWeek(int year, int month, struct months m[]) {
     int mo=month;
@@ -163,21 +183,223 @@ int printCalendar(int year, int month, struct months m[])
         }
     
 }
+
+//fuction to print the entire year
+int printYear(int year, struct months m[])
+{
+    
+    
+    daysOfMonth(year,m);
+    
+    for(int i=1;i<=12;i++)
+    
+    {
+        
+    dayOfWeek(year,i,m);
+        {
+	char spell[10];
+	switch(i) {
+	    
+	    
+	    case 1:
+		strcpy(spell,"January");
+		break;
+		
+		case 2:
+		strcpy(spell,"February");
+		break;
+		
+		case 3:
+		strcpy(spell,"March");
+		break;
+		
+		case 4:
+		strcpy(spell,"April");
+		break;
+		
+		case 5:
+		strcpy(spell,"May");
+		break;
+		
+		case 6:
+		strcpy(spell,"June");
+		break;
+		
+		case 7:
+		strcpy(spell,"July");
+		break;
+		
+		case 8:
+		strcpy(spell,"August");
+		break;
+		
+		case 9:
+		strcpy(spell,"September");
+		break;
+		
+		case 10:
+		strcpy(spell,"October");
+		break;
+		
+		case 11:
+		strcpy(spell,"November");
+		break;
+		
+		case 12:
+		strcpy(spell,"December");
+		break;
+		
+	}
+	int start=1;
+	int end=m[i-1].days;
+	
+	printf("                        %s               ",spell);
+	printf("\n");
+	printf("Sat     Sun     Mon     Tue     Wed     Thr     Fri");
+	printf("\n");
+	
+	int flag=0;
+	for(int k=0;k<6;k++)
+        {
+            
+            
+	    if(end==0)
+                    {
+                        break;
+                    }
+            for(int j=0;j<7;j++)
+            {
+                
+                if(flag==1)
+                {
+                    printf("%d\t",start);
+                    start++;
+                    end--;
+                    if(end==0)
+                    {
+                        break;
+                    }
+                }
+                else if(j==m[i-1].startDay)
+                {
+                    printf("%d\t",start);
+                    start++;
+                    end--;
+                    flag=1;
+                }
+                else
+                    {
+                    printf("\t");
+                    }
+                
+                
+                }printf("\n");
+            }
+        }
+        printf("\n");
+    }
+}
+//function to take in the notes
+void takeNotes(int year, int month, int day, struct notes n[])
+{
+    
+    FlushBuffer();
+    int dayCount=0;
+    for(int i=1;i<month;i++)
+    {
+        dayCount++;   
+    }
+    
+    dayCount+=day;
+    printf("Enter your note : \n");
+    fgets(n[dayCount].note,sizeof(n[dayCount].note),stdin);
+    RemoveNextLine(n[dayCount].note);
+}
+
+//fuction to display the notes
+void displayNotes(int year, int month, struct months m[], struct notes n[]){
+    
+    daysOfMonth(year,m);
+    int dayCount=0;
+    for(int i=1;i<month;i++)
+    {
+        dayCount++;   
+    }
+    
+    for(int j=0;j<m[month-1].days;j++)
+    {
+        dayCount++;
+        if(n[dayCount].note[0]!='\0')
+                {
+                    printf("%d-%d-%d : ",j+1,month,year);
+                puts(n[dayCount].note);
+                }
+    }
+    
+}
 int main()
 {
     
+    struct notes n[366];
     struct months m[12];
-    int month, year;
-    
-    printf("Enter the year : ");
-    scanf("%d",&year);
-    
-    printf("Enter the month : ");
-    scanf("%d",&month);
-    
-    daysOfMonth(year,m);
-    dayOfWeek(year,month,m);
-    printCalendar(year,month,m);
+    int month, year, day;
     
     
+    
+    while(1){
+    int option;
+    printf("Choose an option : \n1)print an entire year\n2)print a month\n3)Add a note\n4)Display notes\n5)Exit : ");
+    scanf("%d",&option);
+    
+    
+    switch(option){
+        case 1:
+        printf("Enter the year : ");
+        scanf("%d",&year);
+        printYear(year,m);
+        break;
+        
+        case 2:
+        printf("Enter the year : ");
+        scanf("%d",&year);
+        
+        printf("Enter the month : ");
+        scanf("%d",&month);
+        
+        
+        daysOfMonth(year,m);
+        dayOfWeek(year,month,m);
+        printCalendar(year,month,m);
+        
+        break;
+        
+        case 3:
+        printf("Enter the year : ");
+        scanf("%d",&year);
+        
+        printf("Enter the month : ");
+        scanf("%d",&month);
+        
+        printf("Enter the day : ");
+        scanf("%d",&day);
+        daysOfMonth(year,m);
+        takeNotes(year,month,day,n);
+        break;
+        
+        
+        case 4:
+        printf("Enter the year : ");
+        scanf("%d",&year);
+        
+        printf("Enter the month : ");
+        scanf("%d",&month);
+        
+        displayNotes(year, month,m,n);
+        break;
+        
+        case 5:
+        return 0;
+    }
+    
+    }
 }
