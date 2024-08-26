@@ -1,18 +1,117 @@
-// Tic-Tac-Toe using C
+
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <conio.h>
 int gameOver=0;
-//function to displayBoard
-void displayBoard(char arr[3][3],char user,char computer)
-{
+int check=0;
+int count=0;
+char computer, user;
+int userChoice;
+int cchoice;
+/*function to check if the cell entered by user or computer
+is empty or it is being occupied. If it is not empty, the
+function will return 1 otherwise it will return 0 */
+
+int checkEmpty(char arr[3][3],char choice){
+  switch(choice){
+      
+      
+      case 1:
+      if(arr[0][0]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 2:
+      if(arr[0][1]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 3:
+      if(arr[0][2]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 4:
+      if(arr[1][0]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 5:
+      if(arr[1][1]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 6:
+      if(arr[1][2]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 7:
+      if(arr[2][0]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 8:
+      if(arr[2][1]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+      
+      case 9:
+      if(arr[2][2]!=' ')
+      {
+          check=1;
+      }
+      else{
+          check=0;
+      }
+      break;
+  }
   
-    
-    int cell;
-    printf("Enter the cell no.");
-    scanf("%d",&cell);
-    switch(cell){
+  return check;
+}
+
+//function to assign the user's choice to the board
+void AssigningUserChoice(char arr[3][3],int userChoice){
+    switch(userChoice){
         case 1:
         arr[0][0]=user;
         break;
@@ -50,26 +149,11 @@ void displayBoard(char arr[3][3],char user,char computer)
         break;
     }
     
-     int cchoice,flag=0;
-    
-    for(int k=0;k<3;k++)
-    {
-        for(int l=0;l<3;l++)
-        {
-            if(arr[k][l]=='\0')
-            {
-                cchoice=rand()%9 +1;
-                flag=1;
-                break;
-            }
-            if(flag==1)
-            {
-                break;
-            }
-            
-        }
-    }
-    
+}
+
+//function to assign the value of computer to the board
+void AssignComputerChoice(char arr[3][3],int cchoice)
+{
     switch(cchoice){
         case 1:
         arr[0][0]=computer;
@@ -106,61 +190,122 @@ void displayBoard(char arr[3][3],char user,char computer)
         case 9:
         arr[2][2]=computer;
         break;
+            }
+}
+/*A function to prompt user to enter the choice till
+ the entered choice has not been used before*/
+void CheckingUserChoice(char arr[3][3])
+{
+    
+    int check=0;
+    while(check!=1)
+    {
+        printf("\nEnter the cell number : ");
+        scanf("%d",&userChoice);
+        check=checkEmpty(arr,userChoice);
+        if(check==0)
+        {
+            break;
+        }
     }
-    
-    
-    for(int i=0;i<3;i++)
+    count++;
+    AssigningUserChoice(arr,userChoice);
+}
+
+/*function to prompt computer to generate a number, till
+the generated number has not been used before*/
+void CheckingComputerChoice(char arr[3][3]){
+    while(check!=1)
+    {
+       
+       int flag=0;
+        for(int k=0;k<3;k++)
+    {
+        for(int l=0;l<3;l++)
+        {
+            if(arr[k][l]=='\0')
+            {
+                cchoice=rand()%9 +1;
+                flag=1;
+                break;
+            }
+            if(flag==1)
+            {
+                break;
+            }
+            
+        }
+    }
+        check=checkEmpty(arr,cchoice);
+        if(check==0)
+        {
+            break;
+        }
+    }
+    count++;
+    AssignComputerChoice(arr,cchoice);
+}
+
+
+
+//function to print the board
+void printBoard(char arr[3][3])
+{
+        for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
         {
-            if(arr[i][j]=='\0')
+            if(arr[i][j]==' ')
             {
                 printf("\t");
             }
             else
             {
-                printf("%c",arr[i][j]);
+                printf("%c\t",arr[i][j]);
             }
         }
         printf("\n");
     }
-    
-    
-    //horizontal comparison
+}
+
+//fuction to compute the winner
+void logic(char arr[3][3], char user, char computer)
+{
+      //horizontal comparison
     if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     else if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==computer)
     {
         gameOver++;
-        printf("Computer won");
+        printf("\nComputer won");
     }
     
     if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     else if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==computer)
     {
         gameOver++;
-        printf("Computer won");
+        printf("\nComputer won");
     }
     
     if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     else if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==computer)
     {
         gameOver++;
-        printf("Computer won");
+        printf("\nComputer won");
     }
     
     
@@ -170,39 +315,39 @@ void displayBoard(char arr[3][3],char user,char computer)
     if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==computer)
     {
         gameOver++;
-        printf("computer won");
+        printf("\ncomputer won");
     }
     
     
     if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==computer)
     {
         gameOver++;
-        printf("computer won");
+        printf("\ncomputer won");
     }
     
     
     if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==computer)
     {
         gameOver++;
-        printf("computer won");
+        printf("\ncomputer won");
     }
     
     
@@ -211,25 +356,29 @@ void displayBoard(char arr[3][3],char user,char computer)
     if(arr[0][0]==arr[1][1] && arr[1][1]==arr[2][2] && arr[2][2]==user)
     {
         gameOver++;
-        printf("you won");
+        printf("\nyou won");
     }
     
     if(arr[0][2]==arr[1][1] && arr[1][1]==arr[2][0] && arr[2][0]==computer)
     {
         gameOver++;
-        printf("computer won");
+        printf("\ncomputer won");
     }
     
-    system("clear");
-    sleep(2);
+    if(count==9)
+    {
+        printf("\nits a draw");
+        gameOver++;
+    }
 }
+
 int main()
 {
     char choice;
     printf("Choose a symbol : x or o : ");
     scanf("%c",&choice);
     
-    char computer, user;
+    
     user=choice;
     if(choice=='x')
     {
@@ -239,9 +388,12 @@ int main()
         computer='x';
     }
     
-    char arr[3][3];
+    char arr[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
     while(gameOver!=1)
     {
-        displayBoard(arr,user,computer);
+        CheckingUserChoice(arr);
+        CheckingComputerChoice(arr);
+        printBoard(arr);
+        logic(arr,user,computer);
     }
 }
