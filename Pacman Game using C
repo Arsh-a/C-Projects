@@ -1,0 +1,52 @@
+//Pacman game using c
+#include <stdio.h>
+#include <stdlib.h>
+//structure to store the food positions
+struct foodPosition{
+    int foodPosition_x;
+    int foodPosition_y;
+};
+
+//function to calculate the food positions of 100 food
+void calculateFoodPosition(struct foodPosition fp[])
+{
+    for(int i=0;i<99;i++)
+    {
+        fp[i].foodPosition_y=rand()%20;
+        fp[i].foodPosition_x=rand()%50;
+        
+    }
+}
+//function to print the board. now, it just prints the border and walls
+void printBoardst(struct foodPosition fp[])
+{
+    for(int i=0;i<20;i++)
+    {
+        
+        for(int j=0;j<50;j++)
+        {
+            if(i==0 || j==0 || i==19||j==49)
+            {
+                printf("#");
+            }
+            
+            else if(i==3&& j>=5 &&j<39 || i==5&& j>=5 &&j<39 ||i==8&& j>=5 &&j<39 ||i==17&& j>=5 &&j<39 ||i==15 && j>=5  &&j<39)
+            {
+                printf("#");
+            }
+            else
+            {
+                printf(" ");
+            }
+        
+        }
+        printf("\n");
+    }
+}
+int main(){
+    
+    //intializing struct for foodPosition to store position details of 100 food
+    struct foodPosition fp[100];
+    calculateFoodPosition(fp);
+    printBoard(fp);
+}
