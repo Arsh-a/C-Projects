@@ -1,4 +1,4 @@
-
+//program to build a tic-tac-toe game using c
 #include <stdio.h>
 #include <stdlib.h>
 int gameOver=0;
@@ -198,11 +198,13 @@ void CheckingUserChoice(char arr[3][3])
 {
     
     int check=0;
-    while(check!=1)
+    while(1)
     {
         printf("\nEnter the cell number : ");
         scanf("%d",&userChoice);
         check=checkEmpty(arr,userChoice);
+        // printf("%d\n",check);
+        // printf("the value in position is: %c",arr[0][0]);
         if(check==0)
         {
             break;
@@ -215,27 +217,28 @@ void CheckingUserChoice(char arr[3][3])
 /*function to prompt computer to generate a number, till
 the generated number has not been used before*/
 void CheckingComputerChoice(char arr[3][3]){
-    while(check!=1)
+    while(1)
     {
        
-       int flag=0;
-        for(int k=0;k<3;k++)
-    {
-        for(int l=0;l<3;l++)
-        {
-            if(arr[k][l]=='\0')
-            {
-                cchoice=rand()%9 +1;
-                flag=1;
-                break;
-            }
-            if(flag==1)
-            {
-                break;
-            }
+    //   int flag=0;
+    //     for(int k=0;k<3;k++)
+    // {
+    //     for(int l=0;l<3;l++)
+    //     {
+    //         if(arr[k][l]=='\0')
+    //         {
+    //             cchoice=rand()%9 +1;
+    //             flag=1;
+    //             break;
+    //         }
+    //         if(flag==1)
+    //         {
+    //             break;
+    //         }
             
-        }
-    }
+    //     }
+    // }
+        cchoice=rand()%9 +1;
         check=checkEmpty(arr,cchoice);
         if(check==0)
         {
@@ -251,6 +254,7 @@ void CheckingComputerChoice(char arr[3][3]){
 //function to print the board
 void printBoard(char arr[3][3])
 {
+    system("clear");
         for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
@@ -275,99 +279,110 @@ void logic(char arr[3][3], char user, char computer)
     if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
     else if(arr[0][0]==arr[0][1] && arr[0][1]==arr[0][2] && arr[0][2]==computer)
     {
         gameOver++;
-        printf("\nComputer won");
+        printf("\nComputer won\n");
     }
     
-    if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==user)
+    else if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
     else if(arr[1][0]==arr[1][1] && arr[1][1]==arr[1][2] && arr[1][2]==computer)
     {
         gameOver++;
-        printf("\nComputer won");
+        printf("\nComputer won\n");
     }
     
-    if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==user)
+    else if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
     else if(arr[2][0]==arr[2][1] && arr[2][1]==arr[2][2] && arr[2][2]==computer)
     {
         gameOver++;
-        printf("\nComputer won");
+        printf("\nComputer won\n");
     }
     
     
     
     //vertical comparison
     
-    if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==user)
+    else if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
-    if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==computer)
+    else if(arr[0][0]==arr[1][0] && arr[1][0]==arr[2][0] && arr[2][0]==computer)
     {
         gameOver++;
-        printf("\ncomputer won");
-    }
-    
-    
-    if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==user)
-    {
-        gameOver++;
-        printf("\nyou won");
-    }
-    
-    if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==computer)
-    {
-        gameOver++;
-        printf("\ncomputer won");
+        printf("\ncomputer won\n");
     }
     
     
-    if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==user)
+    else if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
-    if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==computer)
+    else if(arr[0][1]==arr[1][1] && arr[1][1]==arr[2][1] && arr[2][1]==computer)
     {
         gameOver++;
-        printf("\ncomputer won");
+        printf("\ncomputer won\n");
+    }
+    
+    
+    else if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==user)
+    {
+        gameOver++;
+        printf("\nyou won\n");
+    }
+    
+    else if(arr[0][2]==arr[1][2] && arr[1][2]==arr[2][2] && arr[2][2]==computer)
+    {
+        gameOver++;
+        printf("\ncomputer won\n");
     }
     
     
     //checking diagonally
     
-    if(arr[0][0]==arr[1][1] && arr[1][1]==arr[2][2] && arr[2][2]==user)
+    else if(arr[0][0]==arr[1][1] && arr[1][1]==arr[2][2] && arr[2][2]==user)
     {
         gameOver++;
-        printf("\nyou won");
+        printf("\nyou won\n");
     }
     
-    if(arr[0][2]==arr[1][1] && arr[1][1]==arr[2][0] && arr[2][0]==computer)
+    else if(arr[0][2]==arr[1][1] && arr[1][1]==arr[2][0] && arr[2][0]==computer)
     {
         gameOver++;
-        printf("\ncomputer won");
+        printf("\ncomputer won\n");
+    }
+    else if(arr[0][2]==arr[1][1] && arr[1][1]==arr[2][0] && arr[2][0]==user)
+    {
+        gameOver++;
+        printf("\nyou won\n");
     }
     
-    if(count==9)
+    else if(arr[0][0]==arr[1][1] && arr[1][1]==arr[2][2] && arr[2][2]==computer)
     {
-        printf("\nits a draw");
+        gameOver++;
+        printf("\ncomputer won\n");
+    }
+    
+    else if(count==9)
+    {
+        printf("\nits a draw\n");
         gameOver++;
     }
 }
@@ -392,8 +407,16 @@ int main()
     while(gameOver!=1)
     {
         CheckingUserChoice(arr);
+        printBoard(arr);
+        logic(arr,user,computer);
+        if(gameOver)break;
+        
         CheckingComputerChoice(arr);
         printBoard(arr);
         logic(arr,user,computer);
+        if(gameOver)break;
+        
+        
+        
     }
 }
