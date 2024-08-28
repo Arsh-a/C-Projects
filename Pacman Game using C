@@ -1,25 +1,50 @@
 //Pacman game using c
 #include <stdio.h>
 #include <stdlib.h>
+
+//declaring a global variable to know if the game is over
+int gameOver=0, score=0;
 //structure to store the food positions
 struct foodPosition{
     int foodPosition_x;
     int foodPosition_y;
 };
 
+//structure to store the demon positions
+struct demonPosition{
+    int demonPosition_x;
+    int demonPosition_y;
+};
+//structure to store the positions of pacman 
+struct pacman{
+    int pacmanPosition_x;
+    int pacmanPosition_y;
+};
 //function to calculate the food positions of 100 food
 void calculateFoodPosition(struct foodPosition fp[])
 {
-    for(int i=0;i<99;i++)
+    for(int i=0;i<100;i++)
     {
         fp[i].foodPosition_y=rand()%20;
         fp[i].foodPosition_x=rand()%50;
         
     }
 }
-//function to print the board. now, it just prints the border and walls
-void printBoardst(struct foodPosition fp[])
+
+//function to calculate the demon positions of 10 demons
+void calculateDemonPosition(struct demonPosition dp[])
 {
+    for(int i=0;i<10;i++)
+    {
+        dp[i].demonPosition_y=rand()%20;
+        dp[i].demonPosition_x=rand()%50;
+        
+    }
+}
+//function to print the board. now, it just prints the border and walls
+void printBoard(struct foodPosition fp[],struct pacman* p, struct demonPosition dp[])
+{
+    system("clear");
     for(int i=0;i<20;i++)
     {
         
@@ -34,19 +59,135 @@ void printBoardst(struct foodPosition fp[])
             {
                 printf("#");
             }
-            else
+            else if(i==p->pacmanPosition_y && j==p->pacmanPosition_x)
             {
-                printf(" ");
+                printf("C");
             }
+            else 
+            {
+                int foundfood=0;
+                for(int k=0;k<100;k++)
+                {
+                    
+                    if(p->pacmanPosition_x==fp[k].foodPosition_x && p->pacmanPosition_y==fp[k].foodPosition_y)
+                    {
+                        printf("C");
+                        score++;
+                        break;
+                    }
+                    else if(i==fp[k].foodPosition_y && j==fp[k].foodPosition_x)
+                    {
+                       printf(".");
+                    foundfood=1;
+                    break;   
+                    }
+                }
+                if(foundfood==0)
+                {
+                    int foundDemon=0;
+                    for(int k=0;k<10;k++)
+                    {
+                        if(i==dp[k].demonPosition_y && j==dp[k].demonPosition_x)
+                        {
+                            printf("D");
+                            foundDemon=1;
+                            if(p->pacmanPosition_x==fp[k].foodPosition_x && p->pacmanPosition_y==fp[k].foodPosition_y)
+                            {
+                                gameOver++;
+                            }
+                            break;
+                        }
+                    }
+                    
+                    if(foundDemon==0)
+                    {
+                        printf(" ");
+                    }
+                }
+                // if(i==fp[count].foodPosition_y && j==fp[count].foodPosition_x)
+                // {
+                //     printf(".");
+                //     count++;
+                // }
+                // else
+                // {
+                //     printf(" ");
+                // }
+            }
+            // else
+            // {
+            //     printf(" ");
+            // }
         
         }
         printf("\n");
     }
 }
+
+//function to get the user input and change the position of pacman with user input
+int pacmanPosition(struct pacman* p)
+{
+   
+        //char variable to store the user option 
+        char position;
+        printf("Press key : \n");
+        scanf("%c",&position);   
+        
+        switch(position){
+            case 'a':
+            p->pacmanPosition_y--;
+            break;
+            
+            case 'w':
+            p->pacmanPosition_x++;
+            break;
+            
+            case 's':
+            p->pacmanPosition_x--;
+            break;
+            
+            case 'd':
+            p->pacmanPosition_y++;
+            break;
+            
+            case 'x':
+            return 0;
+        
+        }
+        if(p->pacmanPosition_y>=20 || p->pacmanPosition_x>=50 ||p->pacmanPosition_x<=0|| p->pacmanPosition_y<=0)
+        {
+            gameOver++;
+        }
+}
+
+// void logic(struct foodPosition fp[], struct pacman p, struct demonPosition dp[]){
+//     if(pacmanPosition_y==foodPosition_y && pacmanPosition_x==foodPosition_x)
+//     {
+//         score++;
+//     }
+    
+//     else if(pacmanPosition_y==demonPosition_y && pacmanPosition_x==demonPosition_x)
+//     {
+//         gameOver++;
+//     }
+// }
 int main(){
     
     //intializing struct for foodPosition to store position details of 100 food
     struct foodPosition fp[100];
+    //intializing struct for foodPosition to store position details of 100 food
+    struct demonPosition dp[10];
+    //intializing struct for packmanPosition to store his position details
+    struct pacman p ;
+    p.pacmanPosition_y=18;
+    p.pacmanPosition_x=2;
     calculateFoodPosition(fp);
-    printBoard(fp);
+    calculateDemonPosition(dp);
+    while(gameOver!=1)
+    {
+        printBoard(fp,&p,dp);
+        pacmanPosition(&p);
+    }
+    
+
 }
