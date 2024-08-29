@@ -1,13 +1,28 @@
 //Pacman game using c
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
+//defining clear buffer and remove next line functions
+void FlushBuffer()
+{
+    char c;
+    while((c=getchar())!='\n' && c!=EOF);
+}
+void RemoveNextLine(char* str)
+{
+    size_t len= strlen(str);
+    if(len>0 && str[len-1]=='\n')
+    {
+        str[len-1]='\0';
+    }
+}
 //declaring a global variable to know if the game is over
-int gameOver=0, score=0;
+int gameOver=0, score=0,  flag=0, endGame=0;
 //structure to store the food positions
 struct foodPosition{
     int foodPosition_x;
     int foodPosition_y;
+    int capture;
 };
 
 //structure to store the demon positions
@@ -69,13 +84,14 @@ void printBoard(struct foodPosition fp[],struct pacman* p, struct demonPosition 
                 for(int k=0;k<100;k++)
                 {
                     
-                    if(p->pacmanPosition_x==fp[k].foodPosition_x && p->pacmanPosition_y==fp[k].foodPosition_y)
-                    {
-                        printf("C");
-                        score++;
-                        break;
-                    }
-                    else if(i==fp[k].foodPosition_y && j==fp[k].foodPosition_x)
+                    // if(p->pacmanPosition_x==fp[k].foodPosition_x && p->pacmanPosition_y==fp[k].foodPosition_y)
+                    // {
+                    //     //printf("C");
+                    //     //score++;
+                    //     fp[k].capture=1;
+                    //   //break;
+                    // }
+                     if(i==fp[k].foodPosition_y && j==fp[k].foodPosition_x && fp[k].capture!=1)
                     {
                        printf(".");
                     foundfood=1;
@@ -89,13 +105,25 @@ void printBoard(struct foodPosition fp[],struct pacman* p, struct demonPosition 
                     {
                         if(i==dp[k].demonPosition_y && j==dp[k].demonPosition_x)
                         {
-                            printf("D");
-                            foundDemon=1;
-                            if(p->pacmanPosition_x==fp[k].foodPosition_x && p->pacmanPosition_y==fp[k].foodPosition_y)
+                            if(flag==1)
                             {
                                 gameOver++;
                             }
+                            // if(p->pacmanPosition_x==dp[k].demonPosition_x && p->pacmanPosition_y==dp[k].demonPosition_y)
+                            // {
+                            //     printf("\nYou met the demon\n");
+                            //     gameOver=1;
+                            //     foundDemon=1;
+                        
+                            // }
+                            
+                            else{
+                            
+                                printf("D");
+                            foundDemon=1;
                             break;
+                            }
+                            
                         }
                     }
                     
@@ -122,41 +150,73 @@ void printBoard(struct foodPosition fp[],struct pacman* p, struct demonPosition 
         }
         printf("\n");
     }
+    // printf("Pacman position : %d %d",p->pacmanPosition_x,p->pacmanPosition_y);
+    // printf("Demon position : %d %d",dp[l].demonPosition_x,dp[l].demonPosition_y);
+    // if(dp[l].demonPosition_x==p->pacmanPosition_x && dp[l].demonPosition_y==p->pacmanPosition_y)
+    // {
+    //     gameOver++;
+    // }
+    //   if(gameOver)
+    // {
+    //     printf("\nGame Over! You collided with a demon.\n");
+    //     printf("Final Score: %d\n", score);
+    // }
 }
 
 //function to get the user input and change the position of pacman with user input
-int pacmanPosition(struct pacman* p)
+int pacmanPosition(struct pacman* p, struct demonPosition dp[], struct foodPosition fp[])
 {
    
         //char variable to store the user option 
         char position;
-        printf("Press key : \n");
-        scanf("%c",&position);   
+          // FlushBuffer();
+        printf("Press key : ");
+        scanf(" %c",&position);  
+        //RemoveNextLine(position);
+        
         
         switch(position){
             case 'a':
-            p->pacmanPosition_y--;
-            break;
-            
-            case 'w':
-            p->pacmanPosition_x++;
-            break;
-            
-            case 's':
             p->pacmanPosition_x--;
             break;
             
-            case 'd':
+            case 'w':
+            p->pacmanPosition_y--;
+            break;
+            
+            case 's':
             p->pacmanPosition_y++;
             break;
             
+            case 'd':
+            p->pacmanPosition_x++;
+            break;
+            
             case 'x':
-            return 0;
+            endGame++;
         
         }
         if(p->pacmanPosition_y>=20 || p->pacmanPosition_x>=50 ||p->pacmanPosition_x<=0|| p->pacmanPosition_y<=0)
         {
             gameOver++;
+        }
+        
+        for(int k=0;k<10;k++)
+        {
+            if(dp[k].demonPosition_x==p->pacmanPosition_x && dp[k].demonPosition_y==p->pacmanPosition_y)
+    {
+        flag=1;
+        return 0;
+    }
+        }
+        
+        for(int k=0;k<100;k++)
+        {
+            if(fp[k].foodPosition_x==p->pacmanPosition_x && fp[k].foodPosition_y==p->pacmanPosition_y)
+    {
+        score++;
+        fp[k].capture=1;
+    }
         }
 }
 
@@ -183,11 +243,25 @@ int main(){
     p.pacmanPosition_x=2;
     calculateFoodPosition(fp);
     calculateDemonPosition(dp);
-    while(gameOver!=1)
+         
+    while(!gameOver&&endGame!=1)
     {
+        // printf("\nEnter x to exit\n");
         printBoard(fp,&p,dp);
-        pacmanPosition(&p);
+        printf("%d\n",score);
+        if(!gameOver)
+        {
+             pacmanPosition(&p,dp,fp);
+             
+        }
+       
     }
-    
-
+    if(gameOver==1)
+    {
+        printf("\nGAME OVER your score is : %d",score);
+    }
+    else if(endGame==1)
+    {
+        printf("\nGame closed successfully\nYour score is : %d",score);
+    }
 }
