@@ -36,13 +36,87 @@ struct pacman{
     int pacmanPosition_y;
 };
 //function to calculate the food positions of 100 food
+// void calculateFoodPosition(struct foodPosition fp[])
+// {
+//     int tempx, tempy,foodFlag=0;
+//     for(int i=0;i<100;i++)
+//     {
+        
+//         // while(foodFlag!=1)
+//         // {
+            
+//         // }
+//         do
+//         {
+//             tempx=rand()%20;
+//              for(int k=0;k<100;k++)
+//         {
+            
+//             if(tempx==fp[k].foodPosition_y)
+//             {
+//                 foodFlag=1;
+//                 break;
+//             }
+//         }
+//         }while(foodFlag==1);
+//         if(foodFlag==0)
+//         {
+//             fp[i].foodPosition_y=rand()%20;
+//         }
+      
+//     //   // foodFlag=0;
+       
+//     //     fp[i].foodPosition_x=rand()%50;
+//     foodFlag=0;
+//       do
+//         {
+//             tempy=rand()%50;
+//              for(int k=0;k<100;k++)
+//         {
+            
+//             if(tempx==fp[k].foodPosition_x)
+//             {
+//                 foodFlag=1;
+//                 break;
+//             }
+//         }
+//         }while(foodFlag==1);
+//         if(foodFlag==0)
+//         {
+//             fp[i].foodPosition_x=rand()%50;
+//         }
+      
+        
+//     }
+// }
+
 void calculateFoodPosition(struct foodPosition fp[])
 {
-    for(int i=0;i<100;i++)
+    int tempx, tempy, foodFlag;
+
+    for(int i = 0; i < 100; i++)
     {
-        fp[i].foodPosition_y=rand()%20;
-        fp[i].foodPosition_x=rand()%50;
-        
+        do
+        {
+            foodFlag = 0;
+            tempx = rand() % 50;
+            tempy = rand() % 20;
+            
+            // Check if the generated position overlaps with any existing food position
+            for(int k = 0; k < i; k++)
+            {
+                if(tempx == fp[k].foodPosition_x && tempy == fp[k].foodPosition_y)
+                {
+                    foodFlag = 1; // Position already occupied, generate new position
+                    break;
+                }
+            }
+        } while(foodFlag == 1);
+
+        // Assign unique position to the food item
+        fp[i].foodPosition_x = tempx;
+        fp[i].foodPosition_y = tempy;
+        fp[i].capture = 0; // Mark as not captured
     }
 }
 
@@ -91,7 +165,7 @@ void printBoard(struct foodPosition fp[],struct pacman* p, struct demonPosition 
                     //     fp[k].capture=1;
                     //   //break;
                     // }
-                     if(i==fp[k].foodPosition_y && j==fp[k].foodPosition_x && fp[k].capture!=1)
+                     if((i==fp[k].foodPosition_y && j==fp[k].foodPosition_x) && fp[k].capture!=1)
                     {
                        printf(".");
                     foundfood=1;
@@ -196,7 +270,7 @@ int pacmanPosition(struct pacman* p, struct demonPosition dp[], struct foodPosit
             endGame++;
         
         }
-        if(p->pacmanPosition_y>=20 || p->pacmanPosition_x>=50 ||p->pacmanPosition_x<=0|| p->pacmanPosition_y<=0)
+        if(p->pacmanPosition_y>=19 || p->pacmanPosition_x>=49 ||p->pacmanPosition_x<=0|| p->pacmanPosition_y<=0)
         {
             gameOver++;
         }
@@ -216,6 +290,7 @@ int pacmanPosition(struct pacman* p, struct demonPosition dp[], struct foodPosit
     {
         score++;
         fp[k].capture=1;
+        //break;
     }
         }
 }
@@ -256,7 +331,7 @@ int main(){
         }
        
     }
-    if(gameOver==1)
+    if(flag==1||gameOver==1)
     {
         printf("\nGAME OVER your score is : %d",score);
     }
